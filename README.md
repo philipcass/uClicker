@@ -16,7 +16,7 @@ A normal workflow would be
 
 ### Installation
 
-Drop the uClicker folder into your Plugins folder and it should just go.
+Drop the [Plugins](Assets/Plugins) folder into your project and it should just go.
 
 ### Example
 
