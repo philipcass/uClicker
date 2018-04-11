@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: abc0a208796240a89b8de27822182a18, type: 3}
+  m_Name: ExampleManager
+  m_EditorClassIdentifier: 
+  Currency: {fileID: 11400000, guid: a0eaf6f8e25cf47e78246e64e59f3eba, type: 2}
+  Clickable: {fileID: 11400000, guid: 03273b677845149b8be77e0bbf13a55c, type: 2}
+  AvailableBuildings:
+  - {fileID: 11400000, guid: 334dafe90f2dd4b118bfccbe0dba4fda, type: 2}
+  AvailableUpgrades:
+  - {fileID: 11400000, guid: ac998238e2e814f498abbb4a2f877da6, type: 2}
+  - {fileID: 11400000, guid: c3fcf8cffacc44c5c864ef50586e2737, type: 2}
+  EarnedBuildings: []
+  EarnedUpgrades: []
+  TotalAmount: 28
