@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace uClicker
 {
@@ -22,6 +23,10 @@ namespace uClicker
         public BuildingContainer[] EarnedBuildings;
         public Upgrade[] EarnedUpgrades;
 
+        public UnityEvent OnTick;
+        public UnityEvent OnBuyUpgrade;
+        public UnityEvent OnBuyBuilding;
+
         public float TotalAmount;
 
         public void Click()
@@ -31,16 +36,30 @@ namespace uClicker
             ApplyClickPerks(ref amount);
             ApplyCurrencyPerk(ref amount);
 
-            TotalAmount += amount;
+            bool updated = UpdateTotal(amount);
             UpdateUnlocks();
+            if (updated)
+            {
+                OnTick.Invoke();
+            }
+        }
+
+        private bool UpdateTotal(float amount)
+        {
+            TotalAmount += amount;
+            return amount != 0;
         }
 
         public void Tick()
         {
             var amount = PerSecondAmount();
 
-            TotalAmount += amount;
+            bool updated = UpdateTotal(amount);
             UpdateUnlocks();
+            if (updated)
+            {
+                OnTick.Invoke();
+            }
         }
 
         public float PerSecondAmount()
@@ -90,6 +109,7 @@ namespace uClicker
             }
 
             UpdateUnlocks();
+            OnBuyBuilding.Invoke();
         }
 
         private Building GetBuildingByName(string id)
@@ -152,6 +172,7 @@ namespace uClicker
             Array.Resize(ref EarnedUpgrades, EarnedUpgrades.Length + 1);
             EarnedUpgrades[EarnedUpgrades.Length - 1] = upgrade;
             UpdateUnlocks();
+            OnBuyUpgrade.Invoke();
         }
 
         private void UpdateUnlocks()
@@ -203,7 +224,12 @@ namespace uClicker
                 return false;
             }
 
-            TotalAmount -= cost;
+            bool updated = UpdateTotal(-cost);
+            if (updated)
+            {
+                OnTick.Invoke();
+            }
+
             return true;
         }
 

@@ -33,6 +33,6 @@ public class Binder : MonoBehaviour
     {
         _component = availableBuilding;
         this.Name.text = availableBuilding.Name;
-        this.Cost.text = availableBuilding.Cost.ToString();
+        this.Cost.text = _clickerManager.BuildingCost(availableBuilding).ToString();
     }
 }

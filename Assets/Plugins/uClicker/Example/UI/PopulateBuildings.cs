@@ -22,6 +22,16 @@ public class PopulateBuildings : MonoBehaviour
             go.SetActive(availableBuilding.Unlocked);
             _objects.Add(binder);
         }
+
+        _clickerManager.OnBuyBuilding.AddListener(UpdateBuildingCost);
+    }
+
+    private void UpdateBuildingCost()
+    {
+        for (var i = 0; i < _clickerManager.AvailableBuildings.Length; i++)
+        {
+            _objects[i].Bind(_clickerManager.AvailableBuildings[i]);
+        }
     }
 
     private void Update()

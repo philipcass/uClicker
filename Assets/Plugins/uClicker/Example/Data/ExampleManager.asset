@@ -3,7 +3,7 @@
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
@@ -18,6 +18,25 @@ MonoBehaviour:
   AvailableUpgrades:
   - {fileID: 11400000, guid: ac998238e2e814f498abbb4a2f877da6, type: 2}
   - {fileID: 11400000, guid: c3fcf8cffacc44c5c864ef50586e2737, type: 2}
-  EarnedBuildings: []
-  EarnedUpgrades: []
-  TotalAmount: 28
+  EarnedBuildings:
+  - Building: {fileID: 11400000, guid: 334dafe90f2dd4b118bfccbe0dba4fda, type: 2}
+    Count: 29
+  EarnedUpgrades:
+  - {fileID: 11400000, guid: c3fcf8cffacc44c5c864ef50586e2737, type: 2}
+  - {fileID: 11400000, guid: ac998238e2e814f498abbb4a2f877da6, type: 2}
+  OnTick:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  OnBuyUpgrade:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  OnBuyBuilding:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  TotalAmount: 97

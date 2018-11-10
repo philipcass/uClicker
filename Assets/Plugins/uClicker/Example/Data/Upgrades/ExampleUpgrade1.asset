@@ -3,7 +3,7 @@
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
@@ -12,13 +12,13 @@ MonoBehaviour:
   m_Name: ExampleUpgrade1
   m_EditorClassIdentifier: 
   Name: ExampleUpgrade1
-  Unlocked: 0
+  Unlocked: 1
   Currency: {fileID: 11400000, guid: a0eaf6f8e25cf47e78246e64e59f3eba, type: 2}
   Cost: 2
   Requirements: []
   UpgradePerk:
-  - TargetBuilding: {fileID: 0}
+  - TargetBuilding: {fileID: 11400000, guid: 334dafe90f2dd4b118bfccbe0dba4fda, type: 2}
     TargetCurrency: {fileID: 0}
     TargetClickable: {fileID: 0}
-    Operation: 0
-    Amount: 1
+    Operation: 1
+    Amount: 2

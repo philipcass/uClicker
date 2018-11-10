@@ -3,7 +3,7 @@
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
@@ -19,6 +19,6 @@ MonoBehaviour:
   UpgradePerk:
   - TargetBuilding: {fileID: 0}
     TargetCurrency: {fileID: 0}
-    TargetClickable: {fileID: 0}
+    TargetClickable: {fileID: 11400000, guid: 03273b677845149b8be77e0bbf13a55c, type: 2}
     Operation: 0
     Amount: 1
