@@ -1,0 +1,22 @@
+{
+  "name": "com.wwweh.uclicker",
+  "displayName": "uClicker",
+  "version": "0.0.1",
+  "unity": "2018.3",
+  "description": "Code-light Unity clicker library.",
+  "keywords": [
+    "scripting",
+    "clicker",
+    "idle"
+  ],
+  "samples": [
+    {
+      "displayName": "Example Project",
+      "description": "Simple Example project.",
+      "path": "Samples~/Example"
+    }
+  ],
+  "dependencies": {
+  },
+  "relatedPackages": {}
+}
