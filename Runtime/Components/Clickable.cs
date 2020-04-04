@@ -4,7 +4,7 @@ using UnityEngine;
 namespace uClicker
 {
     [CreateAssetMenu(menuName = "uClicker/Clickable")]
-    public class Clickable : Component
+    public class Clickable : ClickerComponent
     {
         public float Amount;
     }

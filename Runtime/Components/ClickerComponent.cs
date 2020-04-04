@@ -2,12 +2,12 @@
 
 namespace uClicker
 {
-    public abstract class Component : ScriptableObject
+    public abstract class ClickerComponent : ScriptableObject
     {
         public string Name;
     }
 
-    public abstract class UnlockableComponent : Component
+    public abstract class UnlockableComponent : ClickerComponent
     {
         public bool Unlocked;
     }
