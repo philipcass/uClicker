@@ -513,7 +513,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _clickerManager: {fileID: 11400000, guid: 27ceb1e6e30ab485f83680e67b25a857, type: 2}
-  _prefab: {fileID: 1369202087129394, guid: 3e083f79da6aa4635b574d9afdba0268, type: 2}
+  _prefab: {fileID: 1369202087129394, guid: 3e083f79da6aa4635b574d9afdba0268, type: 3}
 --- !u!1 &419187417
 GameObject:
   m_ObjectHideFlags: 0
@@ -1082,7 +1082,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _clickerManager: {fileID: 11400000, guid: 27ceb1e6e30ab485f83680e67b25a857, type: 2}
-  _prefab: {fileID: 1369202087129394, guid: 3e083f79da6aa4635b574d9afdba0268, type: 2}
+  _prefab: {fileID: 1369202087129394, guid: 3e083f79da6aa4635b574d9afdba0268, type: 3}
 --- !u!1 &695968293
 GameObject:
   m_ObjectHideFlags: 0

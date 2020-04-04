@@ -17,27 +17,54 @@ MonoBehaviour:
   AvailableBuildings:
   - {fileID: 11400000, guid: 334dafe90f2dd4b118bfccbe0dba4fda, type: 2}
   AvailableUpgrades:
-  - {fileID: 11400000, guid: ac998238e2e814f498abbb4a2f877da6, type: 2}
   - {fileID: 11400000, guid: c3fcf8cffacc44c5c864ef50586e2737, type: 2}
+  - {fileID: 11400000, guid: ac998238e2e814f498abbb4a2f877da6, type: 2}
   EarnedBuildings:
   - Building: {fileID: 11400000, guid: 334dafe90f2dd4b118bfccbe0dba4fda, type: 2}
-    Count: 29
+    Count: 40
   EarnedUpgrades:
   - {fileID: 11400000, guid: c3fcf8cffacc44c5c864ef50586e2737, type: 2}
   - {fileID: 11400000, guid: ac998238e2e814f498abbb4a2f877da6, type: 2}
   OnTick:
     m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   OnBuyUpgrade:
     m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   OnBuyBuilding:
     m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
-  TotalAmount: 97
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  TotalAmount: 4000

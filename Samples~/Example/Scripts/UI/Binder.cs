@@ -8,11 +8,11 @@ public class Binder : MonoBehaviour
 
     public Text Name;
     public Text Cost;
-    private UnlockableComponent _component;
+    private UnlockableComponent _clickerComponent;
 
     public void Buy()
     {
-        if (_component is Upgrade)
+        if (_clickerComponent is Upgrade)
         {
             _clickerManager.BuyUpgrade(Name.text);
         }
@@ -24,14 +24,14 @@ public class Binder : MonoBehaviour
 
     public void Bind(Upgrade availableUpgrade)
     {
-        _component = availableUpgrade;
+        _clickerComponent = availableUpgrade;
         this.Name.text = availableUpgrade.Name;
         this.Cost.text = availableUpgrade.Cost.ToString();
     }
 
     public void Bind(Building availableBuilding)
     {
-        _component = availableBuilding;
+        _clickerComponent = availableBuilding;
         this.Name.text = availableBuilding.Name;
         this.Cost.text = _clickerManager.BuildingCost(availableBuilding).ToString();
     }
