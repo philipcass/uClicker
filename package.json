@@ -1,7 +1,7 @@
 {
   "name": "com.wwweh.uclicker",
   "displayName": "uClicker",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "unity": "2018.1",
   "description": "Code-light Unity clicker library.",
   "keywords": [

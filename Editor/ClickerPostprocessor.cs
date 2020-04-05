@@ -9,7 +9,7 @@ namespace uClicker.Editor
             foreach (string assetPath in importedAssets)
             {
                 ClickerComponent component = AssetDatabase.LoadAssetAtPath<ClickerComponent>(assetPath);
-                if (component == null || !ClickerSettings.Instance.MapNameToFileNames)
+                if (component == null)
                 {
                     continue;
                 }

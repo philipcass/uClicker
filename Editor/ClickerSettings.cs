@@ -4,7 +4,6 @@ namespace uClicker.Editor
 {
     public class ClickerSettings : UnityEditor.EditorWindow
     {
-        public bool MapNameToFileNames = true;
         public bool UseCustomInspector = true;
 
         private static ClickerSettings _instance;
