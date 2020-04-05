@@ -10,14 +10,13 @@ public class PopulateBuildings : MonoBehaviour
 
     [NonSerialized] private List<Binder> _objects = new List<Binder>();
 
-    // Use this for initialization
     void Start()
     {
-        for (var i = 0; i < _clickerManager.AvailableBuildings.Length; i++)
+        for (int i = 0; i < _clickerManager.AvailableBuildings.Length; i++)
         {
-            var availableBuilding = _clickerManager.AvailableBuildings[i];
+            Building availableBuilding = _clickerManager.AvailableBuildings[i];
             GameObject go = Instantiate(_prefab, this.transform);
-            var binder = go.GetComponent<Binder>();
+            Binder binder = go.GetComponent<Binder>();
             binder.Bind(availableBuilding);
             go.SetActive(availableBuilding.Unlocked);
             _objects.Add(binder);
@@ -28,7 +27,7 @@ public class PopulateBuildings : MonoBehaviour
 
     private void UpdateBuildingCost()
     {
-        for (var i = 0; i < _clickerManager.AvailableBuildings.Length; i++)
+        for (int i = 0; i < _clickerManager.AvailableBuildings.Length; i++)
         {
             _objects[i].Bind(_clickerManager.AvailableBuildings[i]);
         }
@@ -36,7 +35,7 @@ public class PopulateBuildings : MonoBehaviour
 
     private void Update()
     {
-        for (var i = 0; i < _clickerManager.AvailableBuildings.Length; i++)
+        for (int i = 0; i < _clickerManager.AvailableBuildings.Length; i++)
         {
             _objects[i].gameObject.SetActive(_clickerManager.AvailableBuildings[i].Unlocked &&
                                              Array.IndexOf(_clickerManager.EarnedBuildings,

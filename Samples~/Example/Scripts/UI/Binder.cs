@@ -25,14 +25,14 @@ public class Binder : MonoBehaviour
     public void Bind(Upgrade availableUpgrade)
     {
         _clickerComponent = availableUpgrade;
-        this.Name.text = availableUpgrade.Name;
+        this.Name.text = availableUpgrade.name;
         this.Cost.text = availableUpgrade.Cost.ToString();
     }
 
     public void Bind(Building availableBuilding)
     {
         _clickerComponent = availableBuilding;
-        this.Name.text = availableBuilding.Name;
+        this.Name.text = availableBuilding.name;
         this.Cost.text = _clickerManager.BuildingCost(availableBuilding).ToString();
     }
 }

@@ -4,14 +4,15 @@
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5da1617835f149d3965a1c1b221c357d, type: 3}
   m_Name: ExampleUpgrade0
   m_EditorClassIdentifier: 
-  Name: ExampleUpgrade0
+  _serializedGuid: 42472520b7704c4fb1dc0c8084d4b0d3
   Unlocked: 1
   Currency: {fileID: 11400000, guid: a0eaf6f8e25cf47e78246e64e59f3eba, type: 2}
   Cost: 1

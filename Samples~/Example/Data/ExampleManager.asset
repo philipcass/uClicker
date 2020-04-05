@@ -21,7 +21,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: ac998238e2e814f498abbb4a2f877da6, type: 2}
   EarnedBuildings:
   - Building: {fileID: 11400000, guid: 334dafe90f2dd4b118bfccbe0dba4fda, type: 2}
-    Count: 40
+    Count: 50
   EarnedUpgrades:
   - {fileID: 11400000, guid: c3fcf8cffacc44c5c864ef50586e2737, type: 2}
   - {fileID: 11400000, guid: ac998238e2e814f498abbb4a2f877da6, type: 2}
@@ -67,4 +67,4 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  TotalAmount: 4000
+  TotalAmount: 1533
