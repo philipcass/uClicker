@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using UnityEditor;
-using UnityEngine;
+﻿using UnityEditor;
 
 namespace uClicker.Editor
 {
@@ -13,49 +8,27 @@ namespace uClicker.Editor
         {
             foreach (string assetPath in importedAssets)
             {
-                ClickerComponent c = AssetDatabase.LoadAssetAtPath<ClickerComponent>(assetPath);
-                if (c == null || !ClickerSettings.Instance.MapNameToFileNames)
+                ClickerComponent component = AssetDatabase.LoadAssetAtPath<ClickerComponent>(assetPath);
+                if (component == null || !ClickerSettings.Instance.MapNameToFileNames)
                 {
                     continue;
                 }
 
-                c.Name = c.name;
-            }
-        }
-    }
-
-    public static class AssetRebuilder
-    {
-        [MenuItem("Clicker/Rebuild")]
-        public static void RebuildAssets()
-        {
-            RebuildAssets(typeof(ClickerComponent));
-        }
-        
-        private static void RebuildAssets(Type baseType)
-        {
-            IEnumerable<MonoScript> clickerScripts = AssetDatabase.FindAssets("t:MonoScript").Select(AssetDatabase.GUIDToAssetPath)
-                .Select(AssetDatabase.LoadAssetAtPath<MonoScript>).Where(script => script.GetClass() != null && script.GetClass().IsSubclassOf(baseType));
-            IEnumerable<string> scriptGuids = clickerScripts.Select(AssetDatabase.GetAssetPath).Select(AssetDatabase.AssetPathToGUID);
-            HashSet<string> guidHash = new HashSet<string>(scriptGuids);
-
-            AssetDatabase.StartAssetEditing();
-            foreach (string assetFile in Directory.EnumerateFiles(Application.dataPath, "*.asset", SearchOption.AllDirectories))
-            {
-                foreach (string yamlLine in File.ReadLines(assetFile))
+                SerializedObject so = new SerializedObject(component);
+                SerializedProperty serializedProperty = so.FindProperty("_serializedGuid");
+                if (serializedProperty.arraySize == 0)
                 {
-                    if (yamlLine.StartsWith("  m_Script: {fileID: 11500000, guid: "))
+                    serializedProperty.arraySize = 16;
+                    byte[] bs = System.Guid.NewGuid().ToByteArray();
+                    for (int i = 0; i < bs.Length; i++)
                     {
-                        string guid = (yamlLine.Substring(37, 32));
-                        if (guidHash.Contains(guid))
-                        {
-                            Debug.LogFormat("Reimporting asset: {0}", assetFile);
-                            AssetDatabase.ImportAsset(assetFile.Replace(Application.dataPath, "Assets"), ImportAssetOptions.ForceUpdate);
-                        }
+                        byte b = bs[i];
+                        serializedProperty.GetArrayElementAtIndex(i).intValue = b;
                     }
                 }
+
+                so.ApplyModifiedProperties();
             }
-            AssetDatabase.StopAssetEditing();
         }
     }
 }

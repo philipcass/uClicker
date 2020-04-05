@@ -28,7 +28,7 @@ namespace uClicker.Editor
                     fieldType = fieldType.GetElementType();
                 }
 
-                _backingOptions = _clickerComponents.Where(component => component.GetType() == fieldType).ToArray();
+                _backingOptions = _clickerComponents.Where(component => component.GetType() == fieldType).Prepend(null).ToArray();
                 return _backingOptions;
             }
         }
@@ -42,7 +42,7 @@ namespace uClicker.Editor
                     return _displayedOptions;
                 }
 
-                _displayedOptions = Array.ConvertAll(Components, input => input.Name);
+                _displayedOptions = Array.ConvertAll(Components, input => input != null ? input.name: "None");
                 return _displayedOptions;
             }
         }
@@ -68,12 +68,18 @@ namespace uClicker.Editor
                 _clickerComponents = hash.Where(component => component != null).ToArray();
                 foreach (UnityEditor.Editor item in ActiveEditorTracker.sharedTracker.activeEditors)
                 {
+                    //TODO: Update active editors
                 }
             }
         }
 
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
+            if (!ClickerSettings.Instance.UseCustomInspector)
+            {
+                EditorGUI.PropertyField(position,property);
+                return;
+            }
             EditorGUI.BeginProperty(position, label, property);
             EditorGUI.BeginChangeCheck();
 
@@ -82,7 +88,7 @@ namespace uClicker.Editor
                 DisplayedOptions.Length > 0 ? DisplayedOptions : new[] {"None Available"});
             if (EditorGUI.EndChangeCheck())
             {
-                if (index >= 0 && Components.Length > index) property.objectReferenceValue = Components[index];
+                property.objectReferenceValue = Components[index];
             }
 
             EditorGUI.EndProperty();

@@ -12,7 +12,7 @@ namespace uClicker
     }
 
     [CreateAssetMenu(menuName = "uClicker/Manager")]
-    public class ClickerManager : ScriptableObject
+    public class ClickerManager : ClickerComponent
     {
         public Currency Currency;
         public Clickable Clickable;
@@ -117,7 +117,7 @@ namespace uClicker
 
             foreach (Building availableBuilding in AvailableBuildings)
             {
-                if (availableBuilding.Name == id)
+                if (availableBuilding.name == id)
                 {
                     building = availableBuilding;
                 }
@@ -240,13 +240,14 @@ namespace uClicker
                 {
                     if (upgradePerk.TargetClickable == Clickable)
                     {
-                        if (upgradePerk.Operation == Operation.Add)
+                        switch (upgradePerk.Operation)
                         {
-                            amount += upgradePerk.Amount;
-                        }
-                        else
-                        {
-                            amount *= upgradePerk.Amount;
+                            case Operation.Add:
+                                amount += upgradePerk.Amount;
+                                break;
+                            case Operation.Multiply:
+                                amount *= upgradePerk.Amount;
+                                break;
                         }
                     }
                 }
@@ -265,13 +266,14 @@ namespace uClicker
                     {
                         if (upgradePerk.TargetBuilding == building.Building)
                         {
-                            if (upgradePerk.Operation == Operation.Add)
+                            switch (upgradePerk.Operation)
                             {
-                                amount += upgradePerk.Amount;
-                            }
-                            else
-                            {
-                                amount *= upgradePerk.Amount;
+                                case Operation.Add:
+                                    amount += upgradePerk.Amount;
+                                    break;
+                                case Operation.Multiply:
+                                    amount *= upgradePerk.Amount;
+                                    break;
                             }
                         }
                     }
@@ -287,13 +289,14 @@ namespace uClicker
                 {
                     if (upgradePerk.TargetCurrency == Currency)
                     {
-                        if (upgradePerk.Operation == Operation.Add)
+                        switch (upgradePerk.Operation)
                         {
-                            amount += upgradePerk.Amount;
-                        }
-                        else
-                        {
-                            amount *= upgradePerk.Amount;
+                            case Operation.Add:
+                                amount += upgradePerk.Amount;
+                                break;
+                            case Operation.Multiply:
+                                amount *= upgradePerk.Amount;
+                                break;
                         }
                     }
                 }

@@ -2,7 +2,7 @@
   "name": "com.wwweh.uclicker",
   "displayName": "uClicker",
   "version": "0.0.1",
-  "unity": "2018.3",
+  "unity": "2018.1",
   "description": "Code-light Unity clicker library.",
   "keywords": [
     "scripting",
@@ -16,7 +16,6 @@
       "path": "Samples~/Example"
     }
   ],
-  "dependencies": {
-  },
-  "relatedPackages": {}
+  "relatedPackages": {},
+  "type": "library"
 }

@@ -1,40 +1,46 @@
 ﻿using UnityEditor;
-using UnityEngine;
 
 namespace uClicker.Editor
 {
-    [CreateAssetMenu(menuName = "uClicker/Settings")]
-    public class ClickerSettings : ScriptableObject
+    public class ClickerSettings : UnityEditor.EditorWindow
     {
-        private static ClickerSettings _instance;
+        public bool MapNameToFileNames = true;
+        public bool UseCustomInspector = true;
 
-        private void OnDisable()
+        private static ClickerSettings _instance;
+        private UnityEditor.Editor _cachedEditor;
+        private const string SettingsSaveKey = "_clickerSettings";
+
+        [UnityEditor.Callbacks.DidReloadScripts]
+        [InitializeOnLoadMethod]
+        private static void Load()
         {
-            _instance = null;
+            _instance = _instance ?? CreateInstance<ClickerSettings>();
+            DontDestroyOnLoad(_instance);
+            EditorJsonUtility.FromJsonOverwrite(EditorPrefs.GetString(SettingsSaveKey, "{}"), _instance);
         }
 
         public static ClickerSettings Instance
         {
-            get
-            {
-                if (_instance == null)
-                {
-                    var findAssets = AssetDatabase.FindAssets("t:ClickerSettings");
-                    if (findAssets.Length == 0)
-                    {
-                        _instance = CreateInstance<ClickerSettings>();
-                        return _instance;
-                    }
-
-                    string findAsset = findAssets[0];
-                    string guidToAssetPath = AssetDatabase.GUIDToAssetPath(findAsset);
-                    _instance = AssetDatabase.LoadAssetAtPath<ClickerSettings>(guidToAssetPath);
-                }
-
-                return _instance;
-            }
+            get { return _instance; }
         }
 
-        public bool MapNameToFileNames = true;
+        [MenuItem("uClicker/Settings")]
+        static void Init()
+        {
+            ClickerSettings window = (ClickerSettings) GetWindow(typeof(ClickerSettings));
+            window.Show();
+        }
+
+        private void OnGUI()
+        {
+            EditorGUI.BeginChangeCheck();
+            _cachedEditor = _cachedEditor ?? UnityEditor.Editor.CreateEditor(Instance);
+            _cachedEditor.DrawDefaultInspector();
+            if (EditorGUI.EndChangeCheck())
+            {
+                EditorPrefs.SetString(SettingsSaveKey, EditorJsonUtility.ToJson(Instance));
+            }
+        }
     }
 }
