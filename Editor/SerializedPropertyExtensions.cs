@@ -11,8 +11,8 @@ namespace uClicker.Editor
         {
             string[] slices = property.propertyPath.Split('.');
             System.Type type = property.serializedObject.targetObject.GetType();
- 
-            for(int i = 0; i < slices.Length; i++)                
+
+            for (int i = 0; i < slices.Length; i++)
                 if (slices[i] == "Array")
                 {
                     i++; //skips "data[x]"
@@ -20,7 +20,9 @@ namespace uClicker.Editor
                 }
                 else
                 {
-                    type = type.GetField(slices[i], BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.FlattenHierarchy | BindingFlags.Instance).FieldType;
+                    type = type.GetField(slices[i],
+                        BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.FlattenHierarchy |
+                        BindingFlags.Instance).FieldType;
                 }
 
             return type;

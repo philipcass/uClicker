@@ -39,8 +39,7 @@ namespace uClicker
     public abstract class ClickerComponent : ScriptableObject, ISerializationCallbackReceiver
     {
         public static Dictionary<Guid, ClickerComponent> Lookup = new Dictionary<Guid, ClickerComponent>();
-        [HideInInspector]
-        public GUIDContainer GUIDContainer;
+        [HideInInspector] public GUIDContainer GUIDContainer;
 
         public void OnBeforeSerialize()
         {

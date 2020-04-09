@@ -4,7 +4,8 @@ namespace uClicker.Editor
 {
     class ClickerPostprocessor : AssetPostprocessor
     {
-        static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths)
+        static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets,
+            string[] movedFromAssetPaths)
         {
             foreach (string assetPath in importedAssets)
             {
@@ -27,7 +28,6 @@ namespace uClicker.Editor
                 {
                     ClickerComponent.Lookup[component.GUIDContainer.Guid] = component;
                 }
-
             }
         }
     }

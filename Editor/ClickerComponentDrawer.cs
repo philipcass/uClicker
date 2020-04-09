@@ -28,7 +28,8 @@ namespace uClicker.Editor
                     fieldType = fieldType.GetElementType();
                 }
 
-                _backingOptions = _clickerComponents.Where(component => component.GetType() == fieldType).Prepend(null).ToArray();
+                _backingOptions = _clickerComponents.Where(component => component.GetType() == fieldType).Prepend(null)
+                    .ToArray();
                 return _backingOptions;
             }
         }
@@ -42,7 +43,7 @@ namespace uClicker.Editor
                     return _displayedOptions;
                 }
 
-                _displayedOptions = Array.ConvertAll(Components, input => input != null ? input.name: "None");
+                _displayedOptions = Array.ConvertAll(Components, input => input != null ? input.name : "None");
                 return _displayedOptions;
             }
         }
@@ -57,7 +58,8 @@ namespace uClicker.Editor
 
         class ClickerPostprocessor : AssetPostprocessor
         {
-            static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths)
+            static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets,
+                string[] movedFromAssetPaths)
             {
                 HashSet<ClickerComponent> hash = new HashSet<ClickerComponent>(_clickerComponents);
                 foreach (ClickerComponent obj in importedAssets.Select(AssetDatabase.LoadAssetAtPath<ClickerComponent>))
@@ -77,14 +79,16 @@ namespace uClicker.Editor
         {
             if (!ClickerSettings.Instance.UseCustomInspector)
             {
-                EditorGUI.PropertyField(position,property);
+                EditorGUI.PropertyField(position, property);
                 return;
             }
+
             EditorGUI.BeginProperty(position, label, property);
             EditorGUI.BeginChangeCheck();
 
             position = EditorGUI.PrefixLabel(position, GUIUtility.GetControlID(FocusType.Passive), label);
-            int index = EditorGUI.Popup(position, Array.IndexOf(Components, property.objectReferenceValue as ClickerComponent),
+            int index = EditorGUI.Popup(position,
+                Array.IndexOf(Components, property.objectReferenceValue as ClickerComponent),
                 DisplayedOptions.Length > 0 ? DisplayedOptions : new[] {"None Available"});
             if (EditorGUI.EndChangeCheck())
             {
