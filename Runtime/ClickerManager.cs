@@ -40,33 +40,13 @@ namespace uClicker
             }
         }
 
+        public SaveConfig SaveConfig = new SaveConfig();
         public StaticConfig Config;
         public Persistent Save;
 
         public UnityEvent OnTick;
         public UnityEvent OnBuyUpgrade;
         public UnityEvent OnBuyBuilding;
-
-        [Serializable]
-        public class SaveDetails
-        {
-            public enum ManagerStateSaveLocation
-            {
-                SaveToPlayerPrefs,
-                SaveToFile
-            }
-
-            public ManagerStateSaveLocation SaveLocation = ManagerStateSaveLocation.SaveToPlayerPrefs;
-            public string SaveName = "save";
-            public string SavePath = "";
-
-            public string FullSavePath
-            {
-                get { return Path.Combine(Application.persistentDataPath, SavePath, SaveName); }
-            }
-        }
-
-        public SaveDetails SavePath = new SaveDetails();
 
         public void Click()
         {
@@ -178,13 +158,13 @@ namespace uClicker
         public void SaveProgress()
         {
             string value = JsonUtility.ToJson(Save, true);
-            switch (SavePath.SaveLocation)
+            switch (SaveConfig.SaveType)
             {
-                case SaveDetails.ManagerStateSaveLocation.SaveToPlayerPrefs:
-                    PlayerPrefs.SetString(SavePath.SaveName, value);
+                case SaveConfig.SaveTypeEnum.SaveToPlayerPrefs:
+                    PlayerPrefs.SetString(SaveConfig.SaveName, value);
                     break;
-                case SaveDetails.ManagerStateSaveLocation.SaveToFile:
-                    File.WriteAllText(SavePath.FullSavePath, value);
+                case SaveConfig.SaveTypeEnum.SaveToFile:
+                    File.WriteAllText(SaveConfig.FullSavePath, value);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -194,18 +174,18 @@ namespace uClicker
         public void LoadProgress()
         {
             string json;
-            switch (SavePath.SaveLocation)
+            switch (SaveConfig.SaveType)
             {
-                case SaveDetails.ManagerStateSaveLocation.SaveToPlayerPrefs:
-                    json = PlayerPrefs.GetString(SavePath.SaveName);
+                case SaveConfig.SaveTypeEnum.SaveToPlayerPrefs:
+                    json = PlayerPrefs.GetString(SaveConfig.SaveName);
                     break;
-                case SaveDetails.ManagerStateSaveLocation.SaveToFile:
-                    if (!File.Exists(SavePath.FullSavePath))
+                case SaveConfig.SaveTypeEnum.SaveToFile:
+                    if (!File.Exists(SaveConfig.FullSavePath))
                     {
                         return;
                     }
 
-                    json = File.ReadAllText(SavePath.FullSavePath);
+                    json = File.ReadAllText(SaveConfig.FullSavePath);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
