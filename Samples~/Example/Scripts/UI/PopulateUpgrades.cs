@@ -13,9 +13,9 @@ public class PopulateUpgrades : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        for (int i = 0; i < _clickerManager.AvailableUpgrades.Length; i++)
+        for (int i = 0; i < _clickerManager.Config.AvailableUpgrades.Length; i++)
         {
-            Upgrade availableUpgrade = _clickerManager.AvailableUpgrades[i];
+            Upgrade availableUpgrade = _clickerManager.Config.AvailableUpgrades[i];
             GameObject go = Instantiate(_prefab, this.transform);
             Binder binder = go.GetComponent<Binder>();
             binder.Bind(availableUpgrade);
@@ -26,11 +26,11 @@ public class PopulateUpgrades : MonoBehaviour
 
     private void Update()
     {
-        for (int i = 0; i < _clickerManager.AvailableUpgrades.Length; i++)
+        for (int i = 0; i < _clickerManager.Config.AvailableUpgrades.Length; i++)
         {
-            _objects[i].gameObject.SetActive(_clickerManager.AvailableUpgrades[i].Unlocked &&
-                                             Array.IndexOf(_clickerManager.EarnedUpgrades,
-                                                 _clickerManager.AvailableUpgrades[i]) == -1);
+            _objects[i].gameObject.SetActive(_clickerManager.Config.AvailableUpgrades[i].Unlocked &&
+                                             Array.IndexOf(_clickerManager.Save.EarnedUpgrades,
+                                                 _clickerManager.Config.AvailableUpgrades[i]) == -1);
         }
     }
 }

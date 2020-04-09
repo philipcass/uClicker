@@ -23,19 +23,19 @@ public class UpdateInfo : MonoBehaviour
 
     private void OnTick()
     {
-        Money.text = "Current Money: " + Manager.TotalAmount;
+        Money.text = "Current Money: " + Manager.Save.TotalAmount;
     }
 
     private void OnBuyUpgrade()
     {
         Upgrades.text = "Current Upgrades: " +
-                        string.Join(", ", Manager.EarnedUpgrades.Select(upgrade => upgrade.name).ToArray());
+                        string.Join(", ", Manager.Save.EarnedUpgrades.Select(upgrade => upgrade.name).ToArray());
     }
 
     private void OnBuyBuilding()
     {
         Buildings.text = "Current Buildings: " + string.Join(", ",
-                             Manager.EarnedBuildings.Select(building =>
-                                 string.Format("{0} {1}", building.Building.name, building.Count)).ToArray());
+                             Manager.Save.EarnedBuildings.Select((building, i) =>
+                                 string.Format("{0} {1}", building.name, Manager.Save.EarnedBuildingsCount[i])).ToArray());
     }
 }

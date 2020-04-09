@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f392384eff22d1a4793b1ffaa97c74c9, type: 3}
   m_Name: ExampleCoin
   m_EditorClassIdentifier: 
-  _serializedGuid: bbf9c33bdbbf63458aca5611394aa3d0
+  GUIDContainer:
+    _serializedGuid: 0c0e3d4a-a527-435c-8976-6e1aea9d51d3
   PercentIncr: 0.15

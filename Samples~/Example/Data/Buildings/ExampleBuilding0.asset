@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4dc2d09784d447bca5faae6b72f78767, type: 3}
   m_Name: ExampleBuilding0
   m_EditorClassIdentifier: 
-  _serializedGuid: 4869c4755e0e634384e1e80c78ce949c
-  Unlocked: 1
+  GUIDContainer:
+    _serializedGuid: 2a6b08d3-0d76-4bd6-85fc-6bf45b13e220
+  Unlocked: 0
   Currency: {fileID: 11400000, guid: a0eaf6f8e25cf47e78246e64e59f3eba, type: 2}
   Cost: 1
   Amount: 1

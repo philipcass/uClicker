@@ -12,19 +12,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7abe32ad68c414b4b86ec2f9a66932e5, type: 3}
   m_Name: ExampleManager
   m_EditorClassIdentifier: 
-  Currency: {fileID: 11400000, guid: a0eaf6f8e25cf47e78246e64e59f3eba, type: 2}
-  Clickable: {fileID: 11400000, guid: 03273b677845149b8be77e0bbf13a55c, type: 2}
-  AvailableBuildings:
-  - {fileID: 11400000, guid: 334dafe90f2dd4b118bfccbe0dba4fda, type: 2}
-  AvailableUpgrades:
-  - {fileID: 11400000, guid: c3fcf8cffacc44c5c864ef50586e2737, type: 2}
-  - {fileID: 11400000, guid: ac998238e2e814f498abbb4a2f877da6, type: 2}
-  EarnedBuildings:
-  - Building: {fileID: 11400000, guid: 334dafe90f2dd4b118bfccbe0dba4fda, type: 2}
-    Count: 50
-  EarnedUpgrades:
-  - {fileID: 11400000, guid: c3fcf8cffacc44c5c864ef50586e2737, type: 2}
-  - {fileID: 11400000, guid: ac998238e2e814f498abbb4a2f877da6, type: 2}
+  GUIDContainer:
+    _serializedGuid: e4af4947-24a4-49e6-999a-22189857c9fe
+  SaveLocation: 1
+  Config:
+    Currency: {fileID: 11400000, guid: a0eaf6f8e25cf47e78246e64e59f3eba, type: 2}
+    Clickable: {fileID: 11400000, guid: 03273b677845149b8be77e0bbf13a55c, type: 2}
+    AvailableBuildings:
+    - {fileID: 11400000, guid: 334dafe90f2dd4b118bfccbe0dba4fda, type: 2}
+    - {fileID: 11400000, guid: f24d7d7d04ffdb3409a09779aff7e9f0, type: 2}
+    AvailableUpgrades:
+    - {fileID: 11400000, guid: c3fcf8cffacc44c5c864ef50586e2737, type: 2}
+    - {fileID: 11400000, guid: ac998238e2e814f498abbb4a2f877da6, type: 2}
+  Save:
+    EarnedBuildingsCount: 
+    TotalAmount: 0
+    _earnedBuildings: []
+    _earnedUpgrades: []
   OnTick:
     m_PersistentCalls:
       m_Calls:
@@ -67,4 +71,3 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  TotalAmount: 1533

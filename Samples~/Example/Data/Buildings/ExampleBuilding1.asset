@@ -9,18 +9,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5da1617835f149d3965a1c1b221c357d, type: 3}
-  m_Name: ExampleUpgrade0
+  m_Script: {fileID: 11500000, guid: 4dc2d09784d447bca5faae6b72f78767, type: 3}
+  m_Name: ExampleBuilding1
   m_EditorClassIdentifier: 
   GUIDContainer:
-    _serializedGuid: a02266d9-44d3-427f-af27-326b36a4c46c
+    _serializedGuid: 17a7ff59-1289-47b8-8629-613c7b82d0df
   Unlocked: 0
   Currency: {fileID: 11400000, guid: a0eaf6f8e25cf47e78246e64e59f3eba, type: 2}
   Cost: 1
-  Requirements: []
-  UpgradePerk:
-  - TargetBuilding: {fileID: 0}
-    TargetCurrency: {fileID: 0}
-    TargetClickable: {fileID: 11400000, guid: 03273b677845149b8be77e0bbf13a55c, type: 2}
-    Operation: 0
-    Amount: 1
+  Amount: 1
+  Requirements:
+  - UnlockAmount: 5
+    UnlockBuilding: {fileID: 0}
+    UnlockUpgrade: {fileID: 0}

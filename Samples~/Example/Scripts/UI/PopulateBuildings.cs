@@ -12,9 +12,9 @@ public class PopulateBuildings : MonoBehaviour
 
     void Start()
     {
-        for (int i = 0; i < _clickerManager.AvailableBuildings.Length; i++)
+        for (int i = 0; i < _clickerManager.Config.AvailableBuildings.Length; i++)
         {
-            Building availableBuilding = _clickerManager.AvailableBuildings[i];
+            Building availableBuilding = _clickerManager.Config.AvailableBuildings[i];
             GameObject go = Instantiate(_prefab, this.transform);
             Binder binder = go.GetComponent<Binder>();
             binder.Bind(availableBuilding);
@@ -27,19 +27,17 @@ public class PopulateBuildings : MonoBehaviour
 
     private void UpdateBuildingCost()
     {
-        for (int i = 0; i < _clickerManager.AvailableBuildings.Length; i++)
+        for (int i = 0; i < _clickerManager.Config.AvailableBuildings.Length; i++)
         {
-            _objects[i].Bind(_clickerManager.AvailableBuildings[i]);
+            _objects[i].Bind(_clickerManager.Config.AvailableBuildings[i]);
         }
     }
 
     private void Update()
     {
-        for (int i = 0; i < _clickerManager.AvailableBuildings.Length; i++)
+        for (int i = 0; i < _clickerManager.Config.AvailableBuildings.Length; i++)
         {
-            _objects[i].gameObject.SetActive(_clickerManager.AvailableBuildings[i].Unlocked &&
-                                             Array.IndexOf(_clickerManager.EarnedBuildings,
-                                                 _clickerManager.AvailableBuildings[i]) == -1);
+            _objects[i].gameObject.SetActive(_clickerManager.Config.AvailableBuildings[i].Unlocked);
         }
     }
 }

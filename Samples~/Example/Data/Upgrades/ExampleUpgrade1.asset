@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5da1617835f149d3965a1c1b221c357d, type: 3}
   m_Name: ExampleUpgrade1
   m_EditorClassIdentifier: 
-  _serializedGuid: 1c6b6bf64171ec49afe8a0f1f254bbf3
-  Unlocked: 1
+  GUIDContainer:
+    _serializedGuid: bc8e7e06-6f0c-436d-bf14-90f515d946e7
+  Unlocked: 0
   Currency: {fileID: 11400000, guid: a0eaf6f8e25cf47e78246e64e59f3eba, type: 2}
   Cost: 2
   Requirements: []

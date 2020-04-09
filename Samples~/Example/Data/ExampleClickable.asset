@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de2a2e9d25e14799ba8f963d42a53ae4, type: 3}
   m_Name: ExampleClickable
   m_EditorClassIdentifier: 
-  _serializedGuid: dd2fb3becab4d747a0ad602e788939d4
+  GUIDContainer:
+    _serializedGuid: f8029c5c-58da-45a5-b63d-4f943dcd54c9
   Amount: 1
