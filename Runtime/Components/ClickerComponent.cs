@@ -1,19 +1,29 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections.Generic;
+using UnityEngine;
 
 namespace uClicker
 {
-    public abstract class ClickerComponent : ScriptableObject, ISerializationCallbackReceiver
+    [Serializable]
+    public struct GUIDContainer : ISerializationCallbackReceiver
     {
-        System.Guid _guid = System.Guid.Empty;
-        [HideInInspector]
-        [SerializeField]
-        private byte[] _serializedGuid;
+        private Guid _guid;
+        [SerializeField] private string _serializedGuid;
+
+        public System.Guid Guid
+        {
+            get
+            {
+                _guid = _guid != default(Guid) ? _guid : new System.Guid(_serializedGuid);
+                return _guid;
+            }
+        }
 
         public void OnBeforeSerialize()
         {
-            if (_guid != System.Guid.Empty)
+            if (Guid != System.Guid.Empty)
             {
-                _serializedGuid = _guid.ToByteArray();
+                _serializedGuid = Guid.ToString();
             }
         }
 
@@ -23,6 +33,22 @@ namespace uClicker
             {
                 _guid = new System.Guid(_serializedGuid);
             }
+        }
+    }
+
+    public abstract class ClickerComponent : ScriptableObject, ISerializationCallbackReceiver
+    {
+        public static Dictionary<Guid, ClickerComponent> Lookup = new Dictionary<Guid, ClickerComponent>();
+        [HideInInspector]
+        public GUIDContainer GUIDContainer;
+
+        public void OnBeforeSerialize()
+        {
+        }
+
+        public void OnAfterDeserialize()
+        {
+            Lookup[GUIDContainer.Guid] = this;
         }
     }
 

@@ -18,56 +18,57 @@ namespace Clicker.Editor
             if (GUILayout.Button("Populate Buildings"))
             {
                 string[] buildingGUIDs = AssetDatabase.FindAssets("t:Building");
-                manager.AvailableBuildings = new Building[buildingGUIDs.Length];
+                manager.Config.AvailableBuildings = new Building[buildingGUIDs.Length];
                 for (int i = 0; i < buildingGUIDs.Length; i++)
                 {
                     string guid = buildingGUIDs[i];
-                    manager.AvailableBuildings[i] =
+                    manager.Config.AvailableBuildings[i] =
                         AssetDatabase.LoadAssetAtPath<Building>(AssetDatabase.GUIDToAssetPath(guid));
                 }
 
-                Array.Sort(manager.AvailableBuildings, BuildingSorter);
+                Array.Sort(manager.Config.AvailableBuildings, BuildingSorter);
             }
 
             if (GUILayout.Button("Populate Upgrades"))
             {
                 string[] upgradeGUIDs = AssetDatabase.FindAssets("t:Upgrade");
-                manager.AvailableUpgrades = new Upgrade[upgradeGUIDs.Length];
+                manager.Config.AvailableUpgrades = new Upgrade[upgradeGUIDs.Length];
                 for (int i = 0; i < upgradeGUIDs.Length; i++)
                 {
                     string guid = upgradeGUIDs[i];
-                    manager.AvailableUpgrades[i] =
+                    manager.Config.AvailableUpgrades[i] =
                         AssetDatabase.LoadAssetAtPath<Upgrade>(AssetDatabase.GUIDToAssetPath(guid));
                 }
 
-                Array.Sort(manager.AvailableUpgrades, UpgradeSorter);
+                Array.Sort(manager.Config.AvailableUpgrades, UpgradeSorter);
             }
 
             if (GUILayout.Button("Reset Progress"))
             {
-                manager.EarnedBuildings = new BuildingContainer[0];
-                manager.EarnedUpgrades = new Upgrade[0];
-                foreach (Building availableBuilding in manager.AvailableBuildings)
+                manager.Save.EarnedBuildings = new Building[0];
+                manager.Save.EarnedBuildingsCount = new int[0];
+                manager.Save.EarnedUpgrades = new Upgrade[0];
+                foreach (Building availableBuilding in manager.Config.AvailableBuildings)
                 {
                     availableBuilding.Unlocked = false;
                 }
 
-                foreach (Upgrade availableUpgrade in manager.AvailableUpgrades)
+                foreach (Upgrade availableUpgrade in manager.Config.AvailableUpgrades)
                 {
                     availableUpgrade.Unlocked = false;
                 }
 
-                manager.TotalAmount = 0;
+                manager.Save.TotalAmount = 0;
             }
 
             if (GUILayout.Button("Save"))
             {
-                PlayerPrefs.SetString("_save", JsonUtility.ToJson(manager));
+                manager.SaveProgress();
             }
 
             if (GUILayout.Button("Load"))
             {
-                JsonUtility.FromJsonOverwrite(PlayerPrefs.GetString("_save"), manager);
+                manager.LoadProgress();
             }
         }
 

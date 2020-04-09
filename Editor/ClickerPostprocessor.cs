@@ -15,19 +15,19 @@ namespace uClicker.Editor
                 }
 
                 SerializedObject so = new SerializedObject(component);
-                SerializedProperty serializedProperty = so.FindProperty("_serializedGuid");
-                if (serializedProperty.arraySize == 0)
+                so.Update();
+                SerializedProperty serializedProperty = so.FindProperty("GUIDContainer._serializedGuid");
+                if (string.IsNullOrEmpty(serializedProperty.stringValue))
                 {
-                    serializedProperty.arraySize = 16;
-                    byte[] bs = System.Guid.NewGuid().ToByteArray();
-                    for (int i = 0; i < bs.Length; i++)
-                    {
-                        byte b = bs[i];
-                        serializedProperty.GetArrayElementAtIndex(i).intValue = b;
-                    }
+                    serializedProperty.stringValue = System.Guid.NewGuid().ToString();
+                    so.ApplyModifiedProperties();
+                    AssetDatabase.ImportAsset(assetPath);
+                }
+                else
+                {
+                    ClickerComponent.Lookup[component.GUIDContainer.Guid] = component;
                 }
 
-                so.ApplyModifiedProperties();
             }
         }
     }
