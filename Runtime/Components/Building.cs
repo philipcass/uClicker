@@ -7,6 +7,5 @@ namespace uClicker
     {
         public CurrencyTuple Cost;
         public CurrencyTuple YieldAmount;
-        public Requirement[] Requirements;
     }
 }

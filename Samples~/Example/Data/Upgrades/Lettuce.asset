@@ -14,16 +14,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GUIDContainer:
     _serializedGuid: bd2cb437-6ee2-4695-a7dc-539465645a2b
-  Unlocked: 0
+  Unlocked: 1
+  RequirementGroups:
+  - RequirementOperand: 0
+    Requirements:
+    - UnlockAmount:
+        Currency: {fileID: 11400000, guid: a0eaf6f8e25cf47e78246e64e59f3eba, type: 2}
+        Amount: 200
+      UnlockBuilding: {fileID: 0}
+      UnlockUpgrade: {fileID: 0}
   Cost:
     Currency: {fileID: 11400000, guid: a0eaf6f8e25cf47e78246e64e59f3eba, type: 2}
     Amount: 400
-  Requirements:
-  - UnlockAmount:
-      Currency: {fileID: 11400000, guid: a0eaf6f8e25cf47e78246e64e59f3eba, type: 2}
-      Amount: 200
-    UnlockBuilding: {fileID: 0}
-    UnlockUpgrade: {fileID: 0}
   UpgradePerk:
   - TargetBuilding: {fileID: 0}
     TargetClickable: {fileID: 11400000, guid: 03273b677845149b8be77e0bbf13a55c, type: 2}

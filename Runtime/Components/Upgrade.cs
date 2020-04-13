@@ -7,16 +7,7 @@ namespace uClicker
     public class Upgrade : UnlockableComponent
     {
         public CurrencyTuple Cost;
-        public Requirement[] Requirements;
         public UpgradePerk[] UpgradePerk;
-    }
-
-    [Serializable]
-    public class Requirement
-    {
-        public CurrencyTuple UnlockAmount;
-        public Building UnlockBuilding;
-        public Upgrade UnlockUpgrade;
     }
 
     [Serializable]

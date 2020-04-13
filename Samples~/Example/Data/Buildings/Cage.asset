@@ -15,10 +15,10 @@ MonoBehaviour:
   GUIDContainer:
     _serializedGuid: d4dc22f4-c75d-4dbb-bfe1-b4dac26139c2
   Unlocked: 0
+  RequirementGroups: []
   Cost:
     Currency: {fileID: 11400000, guid: a0eaf6f8e25cf47e78246e64e59f3eba, type: 2}
     Amount: 15
   YieldAmount:
     Currency: {fileID: 11400000, guid: a0eaf6f8e25cf47e78246e64e59f3eba, type: 2}
     Amount: 0.1
-  Requirements: []

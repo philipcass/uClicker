@@ -53,8 +53,31 @@ namespace uClicker
         }
     }
 
+    [Serializable]
+    public enum RequirementOperand
+    {
+        And,
+            Or
+    }
+    
+    [Serializable]
+    public class Requirement
+    {
+        public CurrencyTuple UnlockAmount;
+        public Building UnlockBuilding;
+        public Upgrade UnlockUpgrade;
+    }
+
+    [Serializable]
+    public struct RequirementGroup
+    {
+        public RequirementOperand RequirementOperand;
+        public Requirement[] Requirements;
+    }
+
     public abstract class UnlockableComponent : ClickerComponent
     {
         public bool Unlocked;
+        public RequirementGroup[] RequirementGroups;
     }
 }

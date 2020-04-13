@@ -351,33 +351,51 @@ namespace uClicker
 
         private bool CanBuild(Building building)
         {
-            return IsUnlocked(building.Requirements);
+            return IsUnlocked(building.RequirementGroups);
         }
 
         private bool CanUpgrade(Upgrade upgrade)
         {
             bool unlocked = true;
             unlocked &= Array.IndexOf(State.EarnedUpgrades, upgrade) == -1;
-            unlocked &= IsUnlocked(upgrade.Requirements);
+            unlocked &= IsUnlocked(upgrade.RequirementGroups);
 
             return unlocked;
         }
 
-        private bool IsUnlocked(Requirement[] requirements)
+        private bool IsUnlocked(RequirementGroup[] requirementGroups)
         {
-            bool unlocked = true;
-            foreach (Requirement requirement in requirements)
+            bool groupsUnlocked = true;
+            foreach (var requirementGroup in requirementGroups)
             {
-                unlocked &= requirement.UnlockUpgrade == null ||
-                            Array.IndexOf(State.EarnedUpgrades, requirement.UnlockUpgrade) != -1;
-                unlocked &= requirement.UnlockBuilding == null ||
-                            State.EarnedBuildings.ContainsKey(requirement.UnlockBuilding);
-                unlocked &= State.CurrencyHistoricalTotals.ContainsKey(requirement.UnlockAmount.Currency) &&
-                            State.CurrencyHistoricalTotals[requirement.UnlockAmount.Currency] >=
-                            requirement.UnlockAmount.Amount;
+                bool unlocked = requirementGroup.RequirementOperand == RequirementOperand.And;
+                foreach (Requirement requirement in requirementGroup.Requirements)
+                {
+                    if (requirementGroup.RequirementOperand == RequirementOperand.And)
+                    {
+                        unlocked &= requirement.UnlockUpgrade == null ||
+                                    Array.IndexOf(State.EarnedUpgrades, requirement.UnlockUpgrade) != -1;
+                        unlocked &= requirement.UnlockBuilding == null ||
+                                    State.EarnedBuildings.ContainsKey(requirement.UnlockBuilding);
+                        unlocked &= State.CurrencyHistoricalTotals.ContainsKey(requirement.UnlockAmount.Currency) &&
+                                    State.CurrencyHistoricalTotals[requirement.UnlockAmount.Currency] >=
+                                    requirement.UnlockAmount.Amount;
+                    }else if (requirementGroup.RequirementOperand == RequirementOperand.Or)
+                    {
+                        unlocked |= requirement.UnlockUpgrade == null ||
+                                    Array.IndexOf(State.EarnedUpgrades, requirement.UnlockUpgrade) != -1;
+                        unlocked |= requirement.UnlockBuilding == null ||
+                                    State.EarnedBuildings.ContainsKey(requirement.UnlockBuilding);
+                        unlocked |= State.CurrencyHistoricalTotals.ContainsKey(requirement.UnlockAmount.Currency) &&
+                                    State.CurrencyHistoricalTotals[requirement.UnlockAmount.Currency] >=
+                                    requirement.UnlockAmount.Amount;
+                    }
+
+                    groupsUnlocked &= unlocked;
+                }
             }
 
-            return unlocked;
+            return groupsUnlocked;
         }
 
         private void ApplyClickPerks(Clickable clickable, ref float amount)

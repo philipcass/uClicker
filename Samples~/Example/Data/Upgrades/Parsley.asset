@@ -15,15 +15,17 @@ MonoBehaviour:
   GUIDContainer:
     _serializedGuid: 0b05999c-6dab-4540-afef-f01d210fd8b4
   Unlocked: 1
+  RequirementGroups:
+  - RequirementOperand: 0
+    Requirements:
+    - UnlockAmount:
+        Currency: {fileID: 11400000, guid: a0eaf6f8e25cf47e78246e64e59f3eba, type: 2}
+        Amount: 10
+      UnlockBuilding: {fileID: 0}
+      UnlockUpgrade: {fileID: 0}
   Cost:
     Currency: {fileID: 11400000, guid: a0eaf6f8e25cf47e78246e64e59f3eba, type: 2}
     Amount: 100
-  Requirements:
-  - UnlockAmount:
-      Currency: {fileID: 11400000, guid: a0eaf6f8e25cf47e78246e64e59f3eba, type: 2}
-      Amount: 10
-    UnlockBuilding: {fileID: 0}
-    UnlockUpgrade: {fileID: 0}
   UpgradePerk:
   - TargetBuilding: {fileID: 0}
     TargetClickable: {fileID: 11400000, guid: 03273b677845149b8be77e0bbf13a55c, type: 2}

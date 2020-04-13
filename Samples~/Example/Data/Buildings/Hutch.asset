@@ -14,16 +14,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GUIDContainer:
     _serializedGuid: baaa0917-a398-4d76-b835-a6bce8c048b5
-  Unlocked: 0
+  Unlocked: 1
+  RequirementGroups:
+  - RequirementOperand: 0
+    Requirements:
+    - UnlockAmount:
+        Currency: {fileID: 11400000, guid: a0eaf6f8e25cf47e78246e64e59f3eba, type: 2}
+        Amount: 100
+      UnlockBuilding: {fileID: 0}
+      UnlockUpgrade: {fileID: 0}
   Cost:
     Currency: {fileID: 11400000, guid: a0eaf6f8e25cf47e78246e64e59f3eba, type: 2}
     Amount: 100
   YieldAmount:
     Currency: {fileID: 11400000, guid: a0eaf6f8e25cf47e78246e64e59f3eba, type: 2}
     Amount: 0.5
-  Requirements:
-  - UnlockAmount:
-      Currency: {fileID: 11400000, guid: a0eaf6f8e25cf47e78246e64e59f3eba, type: 2}
-      Amount: 100
-    UnlockBuilding: {fileID: 0}
-    UnlockUpgrade: {fileID: 0}
