@@ -14,6 +14,8 @@ public class ClickerRunner : MonoBehaviour
         {
             yield return new WaitForSecondsRealtime(1);
             Manager.Tick();
+            Manager.SaveProgress();
+            PlayerPrefs.Save();
         }
     }
 

@@ -10,17 +10,23 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5da1617835f149d3965a1c1b221c357d, type: 3}
-  m_Name: ExampleUpgrade0
+  m_Name: Lettuce
   m_EditorClassIdentifier: 
   GUIDContainer:
-    _serializedGuid: 96b74cf6-727f-44fd-9b5a-13406e2a1f07
-  Unlocked: 1
-  Currency: {fileID: 11400000, guid: a0eaf6f8e25cf47e78246e64e59f3eba, type: 2}
-  Cost: 1
-  Requirements: []
+    _serializedGuid: bd2cb437-6ee2-4695-a7dc-539465645a2b
+  Unlocked: 0
+  Cost:
+    Currency: {fileID: 11400000, guid: a0eaf6f8e25cf47e78246e64e59f3eba, type: 2}
+    Amount: 400
+  Requirements:
+  - UnlockAmount:
+      Currency: {fileID: 11400000, guid: a0eaf6f8e25cf47e78246e64e59f3eba, type: 2}
+      Amount: 200
+    UnlockBuilding: {fileID: 0}
+    UnlockUpgrade: {fileID: 0}
   UpgradePerk:
   - TargetBuilding: {fileID: 0}
-    TargetCurrency: {fileID: 0}
     TargetClickable: {fileID: 11400000, guid: 03273b677845149b8be77e0bbf13a55c, type: 2}
+    TargetCurrency: {fileID: 0}
     Operation: 0
     Amount: 1

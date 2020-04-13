@@ -10,30 +10,40 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7abe32ad68c414b4b86ec2f9a66932e5, type: 3}
-  m_Name: ExampleManager
+  m_Name: RabbitManager
   m_EditorClassIdentifier: 
   GUIDContainer:
-    _serializedGuid: 46957350-2820-4763-873f-5fb95b45a771
-  SaveConfig:
-    SaveType: 1
+    _serializedGuid: dc915434-4d39-42ab-8a35-f086cdaf673f
+  SaveSettings:
+    SaveType: 0
     SaveName: save
     SavePath: 
   Config:
-    Currency: {fileID: 11400000, guid: a0eaf6f8e25cf47e78246e64e59f3eba, type: 2}
-    Clickable: {fileID: 11400000, guid: 03273b677845149b8be77e0bbf13a55c, type: 2}
+    Currencies:
+    - {fileID: 11400000, guid: a0eaf6f8e25cf47e78246e64e59f3eba, type: 2}
+    Clickables:
+    - {fileID: 11400000, guid: 03273b677845149b8be77e0bbf13a55c, type: 2}
     AvailableBuildings:
     - {fileID: 11400000, guid: 334dafe90f2dd4b118bfccbe0dba4fda, type: 2}
     - {fileID: 11400000, guid: f24d7d7d04ffdb3409a09779aff7e9f0, type: 2}
+    - {fileID: 11400000, guid: f7a6466584e4e0a489b8483e1357fd3e, type: 2}
     AvailableUpgrades:
     - {fileID: 11400000, guid: c3fcf8cffacc44c5c864ef50586e2737, type: 2}
     - {fileID: 11400000, guid: 990a0369f171f63409e7f9584e998814, type: 2}
-  Save:
-    EarnedBuildingsCount: 05000000
-    TotalAmount: 38
+    - {fileID: 11400000, guid: d3789d1b5613f864f914f9a3b4672760, type: 2}
+    BuildingCostIncrease: 0.15
+  State:
     _earnedBuildings:
-    - _serializedGuid: 36b29928-8ae4-439c-9bc5-aebd9e8f26d8
+    - _serializedGuid: d4dc22f4-c75d-4dbb-bfe1-b4dac26139c2
+    _earnedBuildingsCount: 02000000
     _earnedUpgrades:
-    - _serializedGuid: 96b74cf6-727f-44fd-9b5a-13406e2a1f07
+    - _serializedGuid: 0b05999c-6dab-4540-afef-f01d210fd8b4
+    _currencies:
+    - _serializedGuid: 2792f0e8-9163-4c3a-9b0d-4e2b7c651639
+    _currencyCurrentTotals:
+    - 108.39996
+    _currencyHistoricalTotals:
+    - 240.39993
   OnTick:
     m_PersistentCalls:
       m_Calls:

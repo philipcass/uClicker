@@ -9,15 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4dc2d09784d447bca5faae6b72f78767, type: 3}
-  m_Name: ExampleBuilding0
+  m_Script: {fileID: 11500000, guid: c2e59e65541bedc4f959b7bc696f46d7, type: 3}
+  m_Name: Rabbit
   m_EditorClassIdentifier: 
   GUIDContainer:
-    _serializedGuid: 36b29928-8ae4-439c-9bc5-aebd9e8f26d8
-  Unlocked: 1
-  Cost: 1
-  Amount: 1
-  Requirements:
-  - UnlockAmount: 5
-    UnlockBuilding: {fileID: 0}
-    UnlockUpgrade: {fileID: 0}
+    _serializedGuid: 2792f0e8-9163-4c3a-9b0d-4e2b7c651639

@@ -10,14 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4dc2d09784d447bca5faae6b72f78767, type: 3}
-  m_Name: ExampleBuilding1
+  m_Name: Cage
   m_EditorClassIdentifier: 
   GUIDContainer:
-    _serializedGuid: 6734f021-0579-4feb-b319-9d1e577084f3
-  Unlocked: 1
-  Cost: 1
-  Amount: 1
-  Requirements:
-  - UnlockAmount: 5
-    UnlockBuilding: {fileID: 0}
-    UnlockUpgrade: {fileID: 0}
+    _serializedGuid: d4dc22f4-c75d-4dbb-bfe1-b4dac26139c2
+  Unlocked: 0
+  Cost:
+    Currency: {fileID: 11400000, guid: a0eaf6f8e25cf47e78246e64e59f3eba, type: 2}
+    Amount: 15
+  YieldAmount:
+    Currency: {fileID: 11400000, guid: a0eaf6f8e25cf47e78246e64e59f3eba, type: 2}
+    Amount: 0.1
+  Requirements: []

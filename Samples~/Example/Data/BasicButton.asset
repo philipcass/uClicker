@@ -9,9 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f392384eff22d1a4793b1ffaa97c74c9, type: 3}
-  m_Name: ExampleCoin
+  m_Script: {fileID: 11500000, guid: de2a2e9d25e14799ba8f963d42a53ae4, type: 3}
+  m_Name: BasicButton
   m_EditorClassIdentifier: 
   GUIDContainer:
-    _serializedGuid: ba4ff7bd-3328-4e22-8442-5d6b52aa3602
-  PercentIncr: 0.15
+    _serializedGuid: bf23d3ec-bc1a-4e21-8a7d-44fbaac81c0a
+  Currency: {fileID: 11400000, guid: a0eaf6f8e25cf47e78246e64e59f3eba, type: 2}
+  Amount: 1

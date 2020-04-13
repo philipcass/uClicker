@@ -26,7 +26,7 @@ public class Binder : MonoBehaviour
     {
         _clickerComponent = availableUpgrade;
         this.Name.text = availableUpgrade.name;
-        this.Cost.text = availableUpgrade.Cost.ToString();
+        this.Cost.text = availableUpgrade.Cost.Amount.ToString();
     }
 
     public void Bind(Building availableBuilding)
