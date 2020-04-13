@@ -16,8 +16,8 @@ A normal workflow would be
 
 ### Installation
 
-Drop the [Plugins](Assets/Plugins) folder into your project and it should just go.
+uClicker now comes in a package. You can add the github URL via the Package manager or download the source and put it into your projects `Packages` folder.
 
 ### Example
 
-uClicker comes packaged with an example scene with basic UI hooked up. You can find this in the `Example` folder.
+In Unity 2019.3 and up you should be able to install the same via the package manager, otherwise copy and paste the contents of the `uClicker/Sameples~/` to your Assets folder. 
