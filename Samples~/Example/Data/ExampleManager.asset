@@ -13,8 +13,11 @@ MonoBehaviour:
   m_Name: ExampleManager
   m_EditorClassIdentifier: 
   GUIDContainer:
-    _serializedGuid: e4af4947-24a4-49e6-999a-22189857c9fe
-  SaveLocation: 1
+    _serializedGuid: 46957350-2820-4763-873f-5fb95b45a771
+  SaveConfig:
+    SaveType: 1
+    SaveName: save
+    SavePath: 
   Config:
     Currency: {fileID: 11400000, guid: a0eaf6f8e25cf47e78246e64e59f3eba, type: 2}
     Clickable: {fileID: 11400000, guid: 03273b677845149b8be77e0bbf13a55c, type: 2}
@@ -23,12 +26,14 @@ MonoBehaviour:
     - {fileID: 11400000, guid: f24d7d7d04ffdb3409a09779aff7e9f0, type: 2}
     AvailableUpgrades:
     - {fileID: 11400000, guid: c3fcf8cffacc44c5c864ef50586e2737, type: 2}
-    - {fileID: 11400000, guid: ac998238e2e814f498abbb4a2f877da6, type: 2}
+    - {fileID: 11400000, guid: 990a0369f171f63409e7f9584e998814, type: 2}
   Save:
-    EarnedBuildingsCount: 
-    TotalAmount: 0
-    _earnedBuildings: []
-    _earnedUpgrades: []
+    EarnedBuildingsCount: 05000000
+    TotalAmount: 38
+    _earnedBuildings:
+    - _serializedGuid: 36b29928-8ae4-439c-9bc5-aebd9e8f26d8
+    _earnedUpgrades:
+    - _serializedGuid: 96b74cf6-727f-44fd-9b5a-13406e2a1f07
   OnTick:
     m_PersistentCalls:
       m_Calls:

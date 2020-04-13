@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Linq;
+﻿using System.Linq;
 using uClicker;
 using UnityEngine;
 using UnityEngine.UI;

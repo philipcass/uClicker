@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: ExampleUpgrade0
   m_EditorClassIdentifier: 
   GUIDContainer:
-    _serializedGuid: a02266d9-44d3-427f-af27-326b36a4c46c
-  Unlocked: 0
+    _serializedGuid: 96b74cf6-727f-44fd-9b5a-13406e2a1f07
+  Unlocked: 1
   Currency: {fileID: 11400000, guid: a0eaf6f8e25cf47e78246e64e59f3eba, type: 2}
   Cost: 1
   Requirements: []

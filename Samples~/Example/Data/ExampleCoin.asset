@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: ExampleCoin
   m_EditorClassIdentifier: 
   GUIDContainer:
-    _serializedGuid: 0c0e3d4a-a527-435c-8976-6e1aea9d51d3
+    _serializedGuid: ba4ff7bd-3328-4e22-8442-5d6b52aa3602
   PercentIncr: 0.15

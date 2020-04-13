@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: ExampleClickable
   m_EditorClassIdentifier: 
   GUIDContainer:
-    _serializedGuid: f8029c5c-58da-45a5-b63d-4f943dcd54c9
+    _serializedGuid: 375ceb82-3c37-44ae-a822-35330499295f
   Amount: 1

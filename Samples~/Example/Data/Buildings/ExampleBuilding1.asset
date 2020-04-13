@@ -13,9 +13,8 @@ MonoBehaviour:
   m_Name: ExampleBuilding1
   m_EditorClassIdentifier: 
   GUIDContainer:
-    _serializedGuid: 17a7ff59-1289-47b8-8629-613c7b82d0df
-  Unlocked: 0
-  Currency: {fileID: 11400000, guid: a0eaf6f8e25cf47e78246e64e59f3eba, type: 2}
+    _serializedGuid: 6734f021-0579-4feb-b319-9d1e577084f3
+  Unlocked: 1
   Cost: 1
   Amount: 1
   Requirements:
