@@ -23,7 +23,8 @@ namespace uClicker.Editor
                 }
 
                 Guid clickerGuid;
-                int index = ClickerSettings.Instance.ClickerComponentAssetGUIDs.IndexOf(AssetDatabase.AssetPathToGUID(assetPath));
+                int index = ClickerSettings.Instance.ClickerComponentAssetGUIDs.IndexOf(
+                    AssetDatabase.AssetPathToGUID(assetPath));
                 if (index >= 0)
                 {
                     clickerGuid = ClickerSettings.Instance.ClickerComponentGUIDContainers[index].Guid;
@@ -42,7 +43,8 @@ namespace uClicker.Editor
                     // Update DB as this is a new GUID
                     if (index == -1)
                     {
-                        ClickerSettings.Instance.ClickerComponentAssetGUIDs.Add(AssetDatabase.AssetPathToGUID(assetPath));
+                        ClickerSettings.Instance.ClickerComponentAssetGUIDs.Add(
+                            AssetDatabase.AssetPathToGUID(assetPath));
                         ClickerSettings.Instance.ClickerComponentGUIDContainers.Add(new GUIDContainer(clickerGuid));
                     }
 
@@ -55,7 +57,8 @@ namespace uClicker.Editor
 
             foreach (string assetPath in deletedAssets)
             {
-                int index = ClickerSettings.Instance.ClickerComponentAssetGUIDs.IndexOf(AssetDatabase.AssetPathToGUID(assetPath));
+                int index = ClickerSettings.Instance.ClickerComponentAssetGUIDs.IndexOf(
+                    AssetDatabase.AssetPathToGUID(assetPath));
                 if (index >= 0)
                 {
                     Debug.LogFormat("Removing GUID {0}", assetPath);

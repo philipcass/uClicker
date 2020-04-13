@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEngine.Events;
@@ -16,31 +17,73 @@ namespace uClicker
         [Serializable]
         public class ManagerConfig
         {
-            public Currency Currency;
-            public Clickable Clickable;
+            public Currency[] Currencies;
+            public Clickable[] Clickables;
             public Building[] AvailableBuildings;
             public Upgrade[] AvailableUpgrades;
+            public float BuildingCostIncrease = 0.15f;
         }
 
         [Serializable]
         public class ManagerState : ISerializationCallbackReceiver
         {
-            [NonSerialized] public Building[] EarnedBuildings = new Building[0];
-            public int[] EarnedBuildingsCount = new int[0];
+            [NonSerialized] public Dictionary<Building, int> EarnedBuildings = new Dictionary<Building, int>();
             [NonSerialized] public Upgrade[] EarnedUpgrades = new Upgrade[0];
-            public float TotalAmount;
+
+            [NonSerialized]
+            public Dictionary<Currency, float> CurrencyCurrentTotals = new Dictionary<Currency, float>();
+
+            [NonSerialized]
+            public Dictionary<Currency, float> CurrencyHistoricalTotals = new Dictionary<Currency, float>();
+
             [SerializeField] private GUIDContainer[] _earnedBuildings;
+            [SerializeField] private int[] _earnedBuildingsCount = new int[0];
             [SerializeField] private GUIDContainer[] _earnedUpgrades;
+            [SerializeField] private GUIDContainer[] _currencies;
+            [SerializeField] private float[] _currencyCurrentTotals = new float[0];
+            [SerializeField] private float[] _currencyHistoricalTotals = new float[0];
 
             public void OnBeforeSerialize()
             {
-                _earnedBuildings = Array.ConvertAll(EarnedBuildings, input => input.GUIDContainer);
+                Array.Resize(ref _earnedBuildings, EarnedBuildings.Count);
+                Array.Resize(ref _earnedBuildingsCount, EarnedBuildings.Count);
+                int index = 0;
+                foreach (KeyValuePair<Building, int> kvp in EarnedBuildings)
+                {
+                    _earnedBuildings[index] = kvp.Key.GUIDContainer;
+                    _earnedBuildingsCount[index] = kvp.Value;
+                }
+
+                Array.Resize(ref _currencies, CurrencyCurrentTotals.Count);
+                Array.Resize(ref _currencyCurrentTotals, CurrencyCurrentTotals.Count);
+                Array.Resize(ref _currencyHistoricalTotals, CurrencyCurrentTotals.Count);
+                index = 0;
+                foreach (KeyValuePair<Currency, float> kvp in CurrencyCurrentTotals)
+                {
+                    _currencies[index] = kvp.Key.GUIDContainer;
+                    _currencyCurrentTotals[index] = kvp.Value;
+                    float historicalTotal;
+                    CurrencyHistoricalTotals.TryGetValue(kvp.Key, out historicalTotal);
+                    _currencyHistoricalTotals[index] = historicalTotal;
+                }
+
                 _earnedUpgrades = Array.ConvertAll(EarnedUpgrades, input => input.GUIDContainer);
             }
 
             public void OnAfterDeserialize()
             {
-                EarnedBuildings = Array.ConvertAll(_earnedBuildings, input => (Building) RuntimeLookup[input.Guid]);
+                for (int i = 0; i < _earnedBuildings.Length; i++)
+                {
+                    EarnedBuildings[(Building) RuntimeLookup[_earnedBuildings[i].Guid]] = _earnedBuildingsCount[i];
+                }
+
+                for (int i = 0; i < _currencies.Length; i++)
+                {
+                    CurrencyCurrentTotals[(Currency) RuntimeLookup[_currencies[i].Guid]] = _currencyCurrentTotals[i];
+                    CurrencyHistoricalTotals[(Currency) RuntimeLookup[_currencies[i].Guid]] =
+                        _currencyHistoricalTotals[i];
+                }
+
                 EarnedUpgrades = Array.ConvertAll(_earnedUpgrades, input => (Upgrade) RuntimeLookup[input.Guid]);
             }
         }
@@ -56,14 +99,15 @@ namespace uClicker
 #if UNITY_EDITOR
         private void OnValidate()
         {
-            if (UnityEditor.EditorUserBuildSettings.activeBuildTarget == UnityEditor.BuildTarget.WebGL && SaveSettings.SaveType == SaveSettings.SaveTypeEnum.SaveToFile)
+            if (UnityEditor.EditorUserBuildSettings.activeBuildTarget == UnityEditor.BuildTarget.WebGL &&
+                SaveSettings.SaveType == SaveSettings.SaveTypeEnum.SaveToFile)
             {
                 Debug.LogWarning("Cannot save to file on WebGL, changing to SaveToPlayerPrefs");
                 SaveSettings.SaveType = SaveSettings.SaveTypeEnum.SaveToPlayerPrefs;
             }
         }
 #endif
-        
+
         private void OnDisable()
         {
             // Clear save on unload so we don't try deserializing the save between play/stop
@@ -72,14 +116,15 @@ namespace uClicker
 
         #region Public Game Logic
 
-        public void Click()
+        public void Click(Clickable clickable)
         {
-            float amount = Config.Clickable.Amount;
+            float amount = clickable.Amount;
+            Currency currency = clickable.Currency;
 
-            ApplyClickPerks(ref amount);
-            ApplyCurrencyPerk(ref amount);
+            ApplyClickPerks(clickable, ref amount);
+            ApplyCurrencyPerk(currency, ref amount);
 
-            bool updated = UpdateTotal(amount);
+            bool updated = UpdateTotal(currency, amount);
             UpdateUnlocks();
             if (updated)
             {
@@ -89,9 +134,14 @@ namespace uClicker
 
         public void Tick()
         {
-            float amount = PerSecondAmount();
+            bool updated = false;
+            foreach (Currency currency in Config.Currencies)
+            {
+                float amount = PerSecondAmount(currency);
 
-            bool updated = UpdateTotal(amount);
+                updated = UpdateTotal(currency, amount);
+            }
+
             UpdateUnlocks();
             if (updated)
             {
@@ -113,25 +163,21 @@ namespace uClicker
                 return;
             }
 
-            int indexOf = Array.IndexOf(State.EarnedBuildings, building);
+            bool containsKey = State.EarnedBuildings.ContainsKey(building);
+            float cost = !containsKey ? building.Cost.Amount : BuildingCost(building);
 
-            float cost = indexOf == -1 ? building.Cost : BuildingCost(building);
-
-            if (!Deduct(cost))
+            if (!Deduct(building.Cost.Currency, cost))
             {
                 return;
             }
 
-            if (indexOf >= 0)
+            if (containsKey)
             {
-                State.EarnedBuildingsCount[indexOf]++;
+                State.EarnedBuildings[building]++;
             }
             else
             {
-                Array.Resize(ref State.EarnedBuildings, State.EarnedBuildings.Length + 1);
-                Array.Resize(ref State.EarnedBuildingsCount, State.EarnedBuildingsCount.Length + 1);
-                State.EarnedBuildings[State.EarnedBuildings.Length - 1] = building;
-                State.EarnedBuildingsCount[State.EarnedBuildingsCount.Length - 1] = 1;
+                State.EarnedBuildings[building] = 1;
             }
 
             UpdateUnlocks();
@@ -160,7 +206,7 @@ namespace uClicker
                 return;
             }
 
-            if (!Deduct(upgrade.Cost))
+            if (!Deduct(upgrade.Cost.Currency, upgrade.Cost.Amount))
             {
                 return;
             }
@@ -173,10 +219,13 @@ namespace uClicker
 
         public int BuildingCost(Building building)
         {
-            int indexOf = Array.IndexOf(State.EarnedBuildings, building);
+            int count;
+            if (!State.EarnedBuildings.TryGetValue(building, out count))
+            {
+                count = 0;
+            }
 
-            return (int) (building.Cost * Mathf.Pow(1 + Config.Currency.PercentIncr,
-                indexOf == -1 ? 0 : State.EarnedBuildingsCount[indexOf]));
+            return (int) (building.Cost.Amount * Mathf.Pow(1 + Config.BuildingCostIncrease, count));
         }
 
         public void SaveProgress()
@@ -208,9 +257,9 @@ namespace uClicker
                     {
                         return;
                     }
-                    
+
 #if DEBUG
-                    Debug.LogFormat("Loading Save from file: {0}", SaveSettings.FullSavePath);                    
+                    Debug.LogFormat("Loading Save from file: {0}", SaveSettings.FullSavePath);
 #endif
 
                     json = File.ReadAllText(SaveSettings.FullSavePath);
@@ -230,14 +279,14 @@ namespace uClicker
 
         #region Internal Logic
 
-        private bool Deduct(float cost)
+        private bool Deduct(Currency costCurrency, float cost)
         {
-            if (State.TotalAmount < cost)
+            if (State.CurrencyCurrentTotals[costCurrency] < cost)
             {
                 return false;
             }
 
-            bool updated = UpdateTotal(-cost);
+            bool updated = UpdateTotal(costCurrency, -cost);
             if (updated)
             {
                 OnTick.Invoke();
@@ -246,18 +295,29 @@ namespace uClicker
             return true;
         }
 
-        private bool UpdateTotal(float amount)
+        private bool UpdateTotal(Currency currency, float amount)
         {
-            State.TotalAmount += amount;
-            return amount != 0;
+            float total;
+            State.CurrencyCurrentTotals.TryGetValue(currency, out total);
+            total += amount;
+            State.CurrencyCurrentTotals[currency] = total;
+
+            if (amount > 0)
+            {
+                float historicalTotal;
+                State.CurrencyHistoricalTotals.TryGetValue(currency, out historicalTotal);
+                State.CurrencyHistoricalTotals[currency] = historicalTotal + amount;
+            }
+
+            return total != 0;
         }
 
-        private float PerSecondAmount()
+        private float PerSecondAmount(Currency currency)
         {
             float amount = 0;
 
-            ApplyBuildingPerks(ref amount);
-            ApplyCurrencyPerk(ref amount);
+            ApplyBuildingPerks(currency, ref amount);
+            ApplyCurrencyPerk(currency, ref amount);
             return amount;
         }
 
@@ -311,72 +371,61 @@ namespace uClicker
                 unlocked &= requirement.UnlockUpgrade == null ||
                             Array.IndexOf(State.EarnedUpgrades, requirement.UnlockUpgrade) != -1;
                 unlocked &= requirement.UnlockBuilding == null ||
-                            Array.IndexOf(State.EarnedBuildings, requirement.UnlockBuilding) != -1;
-                unlocked &= State.TotalAmount >= requirement.UnlockAmount;
+                            State.EarnedBuildings.ContainsKey(requirement.UnlockBuilding);
+                unlocked &= State.CurrencyHistoricalTotals.ContainsKey(requirement.UnlockAmount.Currency) &&
+                            State.CurrencyHistoricalTotals[requirement.UnlockAmount.Currency] >=
+                            requirement.UnlockAmount.Amount;
             }
 
             return unlocked;
         }
 
-        private void ApplyClickPerks(ref float amount)
+        private void ApplyClickPerks(Clickable clickable, ref float amount)
         {
             foreach (Upgrade upgrade in State.EarnedUpgrades)
             {
                 foreach (UpgradePerk upgradePerk in upgrade.UpgradePerk)
                 {
-                    if (upgradePerk.TargetClickable == Config.Clickable)
+                    if (upgradePerk.TargetClickable != clickable)
                     {
-                        switch (upgradePerk.Operation)
-                        {
-                            case Operation.Add:
-                                amount += upgradePerk.Amount;
-                                break;
-                            case Operation.Multiply:
-                                amount *= upgradePerk.Amount;
-                                break;
-                        }
+                        continue;
+                    }
+
+                    switch (upgradePerk.Operation)
+                    {
+                        case Operation.Add:
+                            amount += upgradePerk.Amount;
+                            break;
+                        case Operation.Multiply:
+                            amount *= upgradePerk.Amount;
+                            break;
                     }
                 }
             }
         }
 
-        private void ApplyBuildingPerks(ref float amount)
+        private void ApplyBuildingPerks(Currency currency, ref float amount)
         {
-            for (int i = 0; i < State.EarnedBuildings.Length; i++)
+            foreach (KeyValuePair<Building, int> kvp in State.EarnedBuildings)
             {
-                Building building = State.EarnedBuildings[i];
-                int buildingCount = State.EarnedBuildingsCount[i];
-                amount += building.Amount * buildingCount;
+                Building building = kvp.Key;
+                if (building.YieldAmount.Currency != currency)
+                {
+                    continue;
+                }
+
+                int buildingCount = kvp.Value;
+                amount += building.YieldAmount.Amount * buildingCount;
 
                 foreach (Upgrade upgrade in State.EarnedUpgrades)
                 {
                     foreach (UpgradePerk upgradePerk in upgrade.UpgradePerk)
                     {
-                        if (upgradePerk.TargetBuilding == building)
+                        if (upgradePerk.TargetBuilding != building)
                         {
-                            switch (upgradePerk.Operation)
-                            {
-                                case Operation.Add:
-                                    amount += upgradePerk.Amount;
-                                    break;
-                                case Operation.Multiply:
-                                    amount *= upgradePerk.Amount;
-                                    break;
-                            }
+                            continue;
                         }
-                    }
-                }
-            }
-        }
 
-        private void ApplyCurrencyPerk(ref float amount)
-        {
-            foreach (Upgrade upgrade in State.EarnedUpgrades)
-            {
-                foreach (UpgradePerk upgradePerk in upgrade.UpgradePerk)
-                {
-                    if (upgradePerk.TargetCurrency == Config.Currency)
-                    {
                         switch (upgradePerk.Operation)
                         {
                             case Operation.Add:
@@ -386,6 +435,30 @@ namespace uClicker
                                 amount *= upgradePerk.Amount;
                                 break;
                         }
+                    }
+                }
+            }
+        }
+
+        private void ApplyCurrencyPerk(Currency currency, ref float amount)
+        {
+            foreach (Upgrade upgrade in State.EarnedUpgrades)
+            {
+                foreach (UpgradePerk upgradePerk in upgrade.UpgradePerk)
+                {
+                    if (upgradePerk.TargetCurrency != currency)
+                    {
+                        continue;
+                    }
+
+                    switch (upgradePerk.Operation)
+                    {
+                        case Operation.Add:
+                            amount += upgradePerk.Amount;
+                            break;
+                        case Operation.Multiply:
+                            amount *= upgradePerk.Amount;
+                            break;
                     }
                 }
             }

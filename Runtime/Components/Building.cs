@@ -5,8 +5,8 @@ namespace uClicker
     [CreateAssetMenu(menuName = "uClicker/Building")]
     public class Building : UnlockableComponent
     {
-        public float Cost;
-        public float Amount;
+        public CurrencyTuple Cost;
+        public CurrencyTuple YieldAmount;
         public Requirement[] Requirements;
     }
 }

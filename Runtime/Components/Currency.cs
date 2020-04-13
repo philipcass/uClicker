@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
 using UnityEngine;
 
 namespace uClicker
@@ -7,6 +6,12 @@ namespace uClicker
     [CreateAssetMenu(menuName = "uClicker/Currency")]
     public class Currency : ClickerComponent
     {
-        public float PercentIncr = 0.15f;
+    }
+
+    [Serializable]
+    public struct CurrencyTuple
+    {
+        public Currency Currency;
+        public float Amount;
     }
 }

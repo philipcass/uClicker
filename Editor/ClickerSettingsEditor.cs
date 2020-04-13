@@ -8,7 +8,10 @@ namespace uClicker.Editor
     public class ClickerSettingsEditor : UnityEditor.EditorWindow
     {
         private SerializedObject _serializedObject;
-        private string[] _propertyBlacklist = new[] {"m_Script", "ClickerComponentGUIDContainers", "ClickerComponentAssetGUIDs"};
+
+        private string[] _propertyBlacklist = new[]
+            {"m_Script", "ClickerComponentGUIDContainers", "ClickerComponentAssetGUIDs"};
+
         private bool _debugOpen;
         private bool _runtimeListOpen;
         private Vector2 _scrollPosition;
@@ -54,8 +57,10 @@ namespace uClicker.Editor
                 {
                     using (new EditorGUI.DisabledScope(true))
                     {
-                        EditorGUILayout.PropertyField(_serializedObject.FindProperty("ClickerComponentGUIDContainers"), true);
-                        EditorGUILayout.PropertyField(_serializedObject.FindProperty("ClickerComponentAssetGUIDs"), true);
+                        EditorGUILayout.PropertyField(_serializedObject.FindProperty("ClickerComponentGUIDContainers"),
+                            true);
+                        EditorGUILayout.PropertyField(_serializedObject.FindProperty("ClickerComponentAssetGUIDs"),
+                            true);
 
                         _runtimeListOpen = EditorGUILayout.Foldout(_runtimeListOpen, "Runtime DB");
                         if (_runtimeListOpen)

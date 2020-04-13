@@ -6,6 +6,7 @@ namespace uClicker
     [CreateAssetMenu(menuName = "uClicker/Clickable")]
     public class Clickable : ClickerComponent
     {
+        public Currency Currency;
         public float Amount;
     }
 }

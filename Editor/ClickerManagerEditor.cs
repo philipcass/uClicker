@@ -46,8 +46,7 @@ namespace Clicker.Editor
 
             if (GUILayout.Button("Reset Progress"))
             {
-                manager.State.EarnedBuildings = new Building[0];
-                manager.State.EarnedBuildingsCount = new int[0];
+                manager.State.EarnedBuildings.Clear();
                 manager.State.EarnedUpgrades = new Upgrade[0];
                 foreach (Building availableBuilding in manager.Config.AvailableBuildings)
                 {
@@ -59,7 +58,7 @@ namespace Clicker.Editor
                     availableUpgrade.Unlocked = false;
                 }
 
-                manager.State.TotalAmount = 0;
+                manager.State.CurrencyCurrentTotals.Clear();
             }
 
             if (GUILayout.Button("Save"))
@@ -75,12 +74,12 @@ namespace Clicker.Editor
 
         private int UpgradeSorter(Upgrade x, Upgrade y)
         {
-            return x.Cost.CompareTo(y.Cost);
+            return x.Cost.Amount.CompareTo(y.Cost.Amount);
         }
 
         private int BuildingSorter(Building x, Building y)
         {
-            return x.Cost.CompareTo(y.Cost);
+            return x.Cost.Amount.CompareTo(y.Cost.Amount);
         }
     }
 }
