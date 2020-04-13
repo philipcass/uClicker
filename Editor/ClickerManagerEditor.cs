@@ -15,6 +15,7 @@ namespace Clicker.Editor
         {
             ClickerManager manager = this.target as ClickerManager;
             base.OnInspectorGUI();
+
             if (GUILayout.Button("Populate Buildings"))
             {
                 string[] buildingGUIDs = AssetDatabase.FindAssets("t:Building");

@@ -48,6 +48,12 @@ namespace uClicker
         public UnityEvent OnBuyUpgrade;
         public UnityEvent OnBuyBuilding;
 
+        private void OnDisable()
+        {
+            // Clear save on unload so we don't try deserializing the save between play/stop
+            Save = new Persistent();
+        }
+
         public void Click()
         {
             float amount = Config.Clickable.Amount;

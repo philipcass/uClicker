@@ -1,44 +1,53 @@
-﻿using UnityEditor;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEditor;
+using UnityEngine;
 
 namespace uClicker.Editor
 {
-    public class ClickerSettings : UnityEditor.EditorWindow
+    [Serializable]
+    public class ClickerSettings : ScriptableObject
     {
         public bool UseCustomInspector = true;
+        public List<GUIDContainer> GuidContainers = new List<GUIDContainer>();
+        public List<string> AssetGuid = new List<string>();
 
-        private static ClickerSettings _instance;
-        private UnityEditor.Editor _cachedEditor;
         private const string SettingsSaveKey = "_clickerSettings";
-
-        [UnityEditor.Callbacks.DidReloadScripts]
-        [InitializeOnLoadMethod]
-        private static void Load()
-        {
-            _instance = _instance ?? CreateInstance<ClickerSettings>();
-            DontDestroyOnLoad(_instance);
-            EditorJsonUtility.FromJsonOverwrite(EditorPrefs.GetString(SettingsSaveKey, "{}"), _instance);
-        }
+        private static ClickerSettings _instance;
+        [SerializeField] [HideInInspector] private bool _init;
 
         public static ClickerSettings Instance
         {
-            get { return _instance; }
-        }
-
-        [MenuItem("uClicker/Settings")]
-        static void Init()
-        {
-            ClickerSettings window = (ClickerSettings) GetWindow(typeof(ClickerSettings));
-            window.Show();
-        }
-
-        private void OnGUI()
-        {
-            EditorGUI.BeginChangeCheck();
-            _cachedEditor = _cachedEditor ?? UnityEditor.Editor.CreateEditor(Instance);
-            _cachedEditor.DrawDefaultInspector();
-            if (EditorGUI.EndChangeCheck())
+            get
             {
-                EditorPrefs.SetString(SettingsSaveKey, EditorJsonUtility.ToJson(Instance));
+                _instance = _instance
+                    ? _instance
+                    : Resources.FindObjectsOfTypeAll<ClickerSettings>().FirstOrDefault() ??
+                      CreateInstance<ClickerSettings>();
+                _instance.hideFlags = HideFlags.DontSave;
+                return _instance;
+            }
+        }
+
+        public void Save()
+        {
+            EditorPrefs.SetString(SettingsSaveKey, EditorJsonUtility.ToJson(_instance));
+        }
+
+        public void Load()
+        {
+            EditorJsonUtility.FromJsonOverwrite(EditorPrefs.GetString(SettingsSaveKey, "{}"), _instance);
+        }
+
+        [InitializeOnLoadMethod]
+        private static void EditorLoad()
+        {
+            if (!Instance._init)
+            {
+                Debug.Log("Loading ClickerSettings...");
+                Instance.Load();
+                Instance._init = true;
             }
         }
     }

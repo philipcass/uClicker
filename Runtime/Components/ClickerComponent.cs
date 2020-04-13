@@ -10,13 +10,15 @@ namespace uClicker
         private Guid _guid;
         [SerializeField] private string _serializedGuid;
 
+        public GUIDContainer(Guid guid)
+        {
+            _guid = guid;
+            _serializedGuid = _guid.ToString();
+        }
+
         public System.Guid Guid
         {
-            get
-            {
-                _guid = _guid != default(Guid) ? _guid : new System.Guid(_serializedGuid);
-                return _guid;
-            }
+            get { return _guid; }
         }
 
         public void OnBeforeSerialize()
@@ -29,7 +31,7 @@ namespace uClicker
 
         public void OnAfterDeserialize()
         {
-            if (_serializedGuid != null && _serializedGuid.Length == 16)
+            if (_serializedGuid != null && !string.IsNullOrEmpty(_serializedGuid))
             {
                 _guid = new System.Guid(_serializedGuid);
             }

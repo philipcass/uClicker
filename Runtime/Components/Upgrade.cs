@@ -6,7 +6,6 @@ namespace uClicker
     [CreateAssetMenu(menuName = "uClicker/Upgrade")]
     public class Upgrade : UnlockableComponent
     {
-        public Currency Currency;
         public int Cost;
         public Requirement[] Requirements;
         public UpgradePerk[] UpgradePerk;

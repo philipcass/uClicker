@@ -1,8 +1,10 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using UnityEngine;
 
 namespace uClicker
 {
+    [Serializable]
     public class SaveConfig
     {
         public enum SaveTypeEnum
