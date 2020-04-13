@@ -53,6 +53,17 @@ namespace uClicker
         public UnityEvent OnBuyUpgrade;
         public UnityEvent OnBuyBuilding;
 
+#if UNITY_EDITOR
+        private void OnValidate()
+        {
+            if (UnityEditor.EditorUserBuildSettings.activeBuildTarget == UnityEditor.BuildTarget.WebGL && SaveSettings.SaveType == SaveSettings.SaveTypeEnum.SaveToFile)
+            {
+                Debug.LogWarning("Cannot save to file on WebGL, changing to SaveToPlayerPrefs");
+                SaveSettings.SaveType = SaveSettings.SaveTypeEnum.SaveToPlayerPrefs;
+            }
+        }
+#endif
+        
         private void OnDisable()
         {
             // Clear save on unload so we don't try deserializing the save between play/stop
