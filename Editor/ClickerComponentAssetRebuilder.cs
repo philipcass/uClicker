@@ -7,7 +7,10 @@ using UnityEngine;
 
 namespace uClicker.Editor
 {
-    public static class AssetRebuilder
+    /// <summary>
+    /// Utility for rebuilding Unity AssetDB when things go out of whack (sometimes common when using SOs)
+    /// </summary>
+    public static class ClickerComponentAssetRebuilder
     {
         [MenuItem("uClicker/Rebuild")]
         public static void RebuildAssets()

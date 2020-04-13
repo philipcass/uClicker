@@ -10,8 +10,8 @@ namespace uClicker.Editor
     public class ClickerSettings : ScriptableObject
     {
         public bool UseCustomInspector = true;
-        public List<GUIDContainer> GuidContainers = new List<GUIDContainer>();
-        public List<string> AssetGuid = new List<string>();
+        public List<GUIDContainer> ClickerComponentGUIDContainers = new List<GUIDContainer>();
+        public List<string> ClickerComponentAssetGUIDs = new List<string>();
 
         private const string SettingsSaveKey = "_clickerSettings";
         private static ClickerSettings _instance;

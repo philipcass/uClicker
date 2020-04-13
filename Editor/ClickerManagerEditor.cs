@@ -46,9 +46,9 @@ namespace Clicker.Editor
 
             if (GUILayout.Button("Reset Progress"))
             {
-                manager.Save.EarnedBuildings = new Building[0];
-                manager.Save.EarnedBuildingsCount = new int[0];
-                manager.Save.EarnedUpgrades = new Upgrade[0];
+                manager.State.EarnedBuildings = new Building[0];
+                manager.State.EarnedBuildingsCount = new int[0];
+                manager.State.EarnedUpgrades = new Upgrade[0];
                 foreach (Building availableBuilding in manager.Config.AvailableBuildings)
                 {
                     availableBuilding.Unlocked = false;
@@ -59,7 +59,7 @@ namespace Clicker.Editor
                     availableUpgrade.Unlocked = false;
                 }
 
-                manager.Save.TotalAmount = 0;
+                manager.State.TotalAmount = 0;
             }
 
             if (GUILayout.Button("Save"))

@@ -6,6 +6,9 @@ using UnityEngine;
 
 namespace uClicker.Editor
 {
+    /// <summary>
+    /// CustomPropertyDrawer that enables dropdowns for ClickerComponents
+    /// </summary>
     [CustomPropertyDrawer(typeof(ClickerComponent), true)]
     public class ClickerComponentDrawer : PropertyDrawer
     {

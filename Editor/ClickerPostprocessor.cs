@@ -5,6 +5,9 @@ using UnityEngine;
 
 namespace uClicker.Editor
 {
+    /// <summary>
+    /// Postprocessor responsible for maintaining the valid GUIDs for clicker components
+    /// </summary>
     class ClickerPostprocessor : AssetPostprocessor
     {
         static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets,
@@ -20,10 +23,10 @@ namespace uClicker.Editor
                 }
 
                 Guid clickerGuid;
-                int index = ClickerSettings.Instance.AssetGuid.IndexOf(AssetDatabase.AssetPathToGUID(assetPath));
+                int index = ClickerSettings.Instance.ClickerComponentAssetGUIDs.IndexOf(AssetDatabase.AssetPathToGUID(assetPath));
                 if (index >= 0)
                 {
-                    clickerGuid = ClickerSettings.Instance.GuidContainers[index].Guid;
+                    clickerGuid = ClickerSettings.Instance.ClickerComponentGUIDContainers[index].Guid;
                 }
                 else
                 {
@@ -39,8 +42,8 @@ namespace uClicker.Editor
                     // Update DB as this is a new GUID
                     if (index == -1)
                     {
-                        ClickerSettings.Instance.AssetGuid.Add(AssetDatabase.AssetPathToGUID(assetPath));
-                        ClickerSettings.Instance.GuidContainers.Add(new GUIDContainer(clickerGuid));
+                        ClickerSettings.Instance.ClickerComponentAssetGUIDs.Add(AssetDatabase.AssetPathToGUID(assetPath));
+                        ClickerSettings.Instance.ClickerComponentGUIDContainers.Add(new GUIDContainer(clickerGuid));
                     }
 
                     serializedProperty.stringValue = clickerGuid.ToString();
@@ -52,12 +55,12 @@ namespace uClicker.Editor
 
             foreach (string assetPath in deletedAssets)
             {
-                int index = ClickerSettings.Instance.AssetGuid.IndexOf(AssetDatabase.AssetPathToGUID(assetPath));
+                int index = ClickerSettings.Instance.ClickerComponentAssetGUIDs.IndexOf(AssetDatabase.AssetPathToGUID(assetPath));
                 if (index >= 0)
                 {
                     Debug.LogFormat("Removing GUID {0}", assetPath);
-                    ClickerSettings.Instance.AssetGuid.RemoveAt(index);
-                    ClickerSettings.Instance.GuidContainers.RemoveAt(index);
+                    ClickerSettings.Instance.ClickerComponentAssetGUIDs.RemoveAt(index);
+                    ClickerSettings.Instance.ClickerComponentGUIDContainers.RemoveAt(index);
                     rebuildRuntimeDB = true;
                 }
             }
@@ -67,7 +70,7 @@ namespace uClicker.Editor
 
             if (rebuildRuntimeDB)
             {
-                ClickerComponent.Lookup.Clear();
+                ClickerComponent.RuntimeLookup.Clear();
                 foreach (ClickerComponent clickerComponent in AssetDatabase.FindAssets("t:ClickerComponent")
                     .Select(AssetDatabase.GUIDToAssetPath).Select(AssetDatabase.LoadAssetAtPath<ClickerComponent>))
                 {

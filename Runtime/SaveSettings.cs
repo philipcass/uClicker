@@ -5,7 +5,7 @@ using UnityEngine;
 namespace uClicker
 {
     [Serializable]
-    public class SaveConfig
+    public class SaveSettings
     {
         public enum SaveTypeEnum
         {
