@@ -52,6 +52,7 @@ namespace uClicker
                 {
                     _earnedBuildings[index] = kvp.Key.GUIDContainer;
                     _earnedBuildingsCount[index] = kvp.Value;
+                    index++;
                 }
 
                 Array.Resize(ref _currencies, CurrencyCurrentTotals.Count);
@@ -65,6 +66,7 @@ namespace uClicker
                     float historicalTotal;
                     CurrencyHistoricalTotals.TryGetValue(kvp.Key, out historicalTotal);
                     _currencyHistoricalTotals[index] = historicalTotal;
+                    index++;
                 }
 
                 _earnedUpgrades = Array.ConvertAll(EarnedUpgrades, input => input.GUIDContainer);
@@ -365,33 +367,37 @@ namespace uClicker
 
         private bool IsUnlocked(RequirementGroup[] requirementGroups)
         {
-            bool groupsUnlocked = true;
+            bool compareStarted = false;
+            // if empty it's unlocked
+            bool groupsUnlocked = requirementGroups.Length == 0;
             foreach (var requirementGroup in requirementGroups)
             {
-                bool unlocked = requirementGroup.RequirementOperand == RequirementOperand.And;
+                if (!compareStarted)
+                {
+                    compareStarted = true;
+                    groupsUnlocked = requirementGroup.RequirementOperand == RequirementOperand.And;
+                }
+                
+                bool unlocked = true;
                 foreach (Requirement requirement in requirementGroup.Requirements)
                 {
-                    if (requirementGroup.RequirementOperand == RequirementOperand.And)
-                    {
-                        unlocked &= requirement.UnlockUpgrade == null ||
-                                    Array.IndexOf(State.EarnedUpgrades, requirement.UnlockUpgrade) != -1;
-                        unlocked &= requirement.UnlockBuilding == null ||
-                                    State.EarnedBuildings.ContainsKey(requirement.UnlockBuilding);
-                        unlocked &= State.CurrencyHistoricalTotals.ContainsKey(requirement.UnlockAmount.Currency) &&
-                                    State.CurrencyHistoricalTotals[requirement.UnlockAmount.Currency] >=
-                                    requirement.UnlockAmount.Amount;
-                    }else if (requirementGroup.RequirementOperand == RequirementOperand.Or)
-                    {
-                        unlocked |= requirement.UnlockUpgrade == null ||
-                                    Array.IndexOf(State.EarnedUpgrades, requirement.UnlockUpgrade) != -1;
-                        unlocked |= requirement.UnlockBuilding == null ||
-                                    State.EarnedBuildings.ContainsKey(requirement.UnlockBuilding);
-                        unlocked |= State.CurrencyHistoricalTotals.ContainsKey(requirement.UnlockAmount.Currency) &&
-                                    State.CurrencyHistoricalTotals[requirement.UnlockAmount.Currency] >=
-                                    requirement.UnlockAmount.Amount;
-                    }
+                    unlocked &= requirement.UnlockUpgrade == null ||
+                                Array.IndexOf(State.EarnedUpgrades, requirement.UnlockUpgrade) != -1;
+                    unlocked &= requirement.UnlockBuilding == null ||
+                                State.EarnedBuildings.ContainsKey(requirement.UnlockBuilding);
+                    unlocked &= requirement.UnlockAmount.Currency == null ||
+                                (State.CurrencyHistoricalTotals.ContainsKey(requirement.UnlockAmount.Currency) &&
+                                State.CurrencyHistoricalTotals[requirement.UnlockAmount.Currency] >=
+                                requirement.UnlockAmount.Amount);
+                }
 
+                if (requirementGroup.RequirementOperand == RequirementOperand.And)
+                {
                     groupsUnlocked &= unlocked;
+                }
+                else
+                {
+                    groupsUnlocked |= unlocked;
                 }
             }
 
