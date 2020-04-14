@@ -12,21 +12,22 @@ namespace uClicker.Editor
             label = EditorGUI.BeginProperty(position, label, property);
             var requirementsArray = property.FindPropertyRelative("Requirements");
 
-            EditorGUI.indentLevel++;
+            position = EditorGUI.IndentedRect(position);
+            GUI.BeginGroup(position, EditorStyles.helpBox);
+            Rect groupPosition = new Rect();
+            groupPosition.y = 8;
+            groupPosition.width = position.width - 16;
 
-            var groupPosition = EditorGUI.IndentedRect(position);
-            groupPosition.height = GetPropertyHeight(property, label);
-            GUI.BeginGroup(groupPosition, EditorStyles.helpBox);
-            position.y = 8;
-            position.width -= 64;
+            groupPosition.height = EditorGUIUtility.singleLineHeight;
+            EditorGUI.PropertyField(groupPosition, property.FindPropertyRelative("GroupOperand"));
+            groupPosition.y += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
 
-            position.height = EditorGUIUtility.singleLineHeight;
-            EditorGUI.PropertyField(position, property.FindPropertyRelative("RequirementOperand"));
-            position.y += EditorGUIUtility.singleLineHeight;
+            groupPosition.height = EditorGUIUtility.singleLineHeight;
+            requirementsArray.arraySize =
+                EditorGUI.IntField(groupPosition, "Requirements", requirementsArray.arraySize);
+            groupPosition.y += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
 
-            position.height = EditorGUIUtility.singleLineHeight;
-            requirementsArray.arraySize = EditorGUI.IntField(position, "Requirements", requirementsArray.arraySize);
-            position.y += EditorGUIUtility.singleLineHeight;
+            groupPosition = EditorGUI.IndentedRect(groupPosition);
 
             for (int i = 0; i < requirementsArray.arraySize; i++)
             {
@@ -34,17 +35,17 @@ namespace uClicker.Editor
                 var requirementTypeProp = requirement.FindPropertyRelative("RequirementType");
                 RequirementType type = (RequirementType) requirementTypeProp.enumValueIndex;
 
-                position.height = EditorGUIUtility.singleLineHeight;
-                type = (RequirementType) GUI.Toolbar(position, (int) type, requirementTypeProp.enumDisplayNames);
-                position.y += EditorGUIUtility.singleLineHeight;
+                groupPosition.height = EditorGUIUtility.singleLineHeight;
+                type = (RequirementType) GUI.Toolbar(groupPosition, (int) type, requirementTypeProp.enumDisplayNames);
+                groupPosition.y += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
 
                 var reqObject = GetActiveRequirement(requirement);
 
                 var reqHeight = EditorGUI.GetPropertyHeight(reqObject);
 
-                position.height = reqHeight;
-                EditorGUI.PropertyField(position, reqObject, true);
-                position.y += reqHeight;
+                groupPosition.height = reqHeight;
+                EditorGUI.PropertyField(groupPosition, reqObject, true);
+                groupPosition.y += reqHeight + EditorGUIUtility.standardVerticalSpacing;
 
                 requirementTypeProp.enumValueIndex = (int) type;
             }
@@ -80,16 +81,17 @@ namespace uClicker.Editor
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
             float totalHeight = 0;
-            totalHeight += EditorGUIUtility.singleLineHeight;
-            totalHeight += EditorGUIUtility.singleLineHeight;
-            totalHeight += EditorGUIUtility.singleLineHeight;
+            totalHeight += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
+            totalHeight += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
+            totalHeight += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
             var requirementsArray = property.FindPropertyRelative("Requirements");
             for (int i = 0; i < requirementsArray.arraySize; i++)
             {
                 var requirement = requirementsArray.GetArrayElementAtIndex(i);
                 var reqObject = GetActiveRequirement(requirement);
 
-                var reqHeight = EditorGUI.GetPropertyHeight(reqObject) + EditorGUIUtility.singleLineHeight;
+                var reqHeight = EditorGUI.GetPropertyHeight(reqObject) + EditorGUIUtility.singleLineHeight +
+                                EditorGUIUtility.standardVerticalSpacing;
 
                 totalHeight += reqHeight;
             }

@@ -375,23 +375,37 @@ namespace uClicker
                 if (!compareStarted)
                 {
                     compareStarted = true;
-                    groupsUnlocked = requirementGroup.RequirementOperand == RequirementOperand.And;
+                    groupsUnlocked = requirementGroup.GroupOperand == RequirementOperand.And;
                 }
-                
+
                 bool unlocked = true;
                 foreach (Requirement requirement in requirementGroup.Requirements)
                 {
-                    unlocked &= requirement.UnlockUpgrade == null ||
-                                Array.IndexOf(State.EarnedUpgrades, requirement.UnlockUpgrade) != -1;
-                    unlocked &= requirement.UnlockBuilding == null ||
-                                State.EarnedBuildings.ContainsKey(requirement.UnlockBuilding);
-                    unlocked &= requirement.UnlockAmount.Currency == null ||
-                                (State.CurrencyHistoricalTotals.ContainsKey(requirement.UnlockAmount.Currency) &&
-                                State.CurrencyHistoricalTotals[requirement.UnlockAmount.Currency] >=
-                                requirement.UnlockAmount.Amount);
+                    switch (requirement.RequirementType)
+                    {
+                        case RequirementType.Currency:
+                            unlocked &= requirement.UnlockAmount.Currency == null ||
+                                        (State.CurrencyHistoricalTotals.ContainsKey(requirement.UnlockAmount
+                                             .Currency) &&
+                                         State.CurrencyHistoricalTotals[requirement.UnlockAmount.Currency] >=
+                                         requirement.UnlockAmount.Amount);
+                            break;
+                        case RequirementType.Building:
+                            unlocked &= requirement.UnlockBuilding.Building == null ||
+                                        State.EarnedBuildings.ContainsKey(requirement.UnlockBuilding.Building) &&
+                                        State.EarnedBuildings[requirement.UnlockBuilding.Building] >=
+                                        requirement.UnlockBuilding.Amount;
+                            break;
+                        case RequirementType.Upgrade:
+                            unlocked &= requirement.UnlockUpgrade == null ||
+                                        Array.IndexOf(State.EarnedUpgrades, requirement.UnlockUpgrade) != -1;
+                            break;
+                        default:
+                            throw new ArgumentOutOfRangeException();
+                    }
                 }
 
-                if (requirementGroup.RequirementOperand == RequirementOperand.And)
+                if (requirementGroup.GroupOperand == RequirementOperand.And)
                 {
                     groupsUnlocked &= unlocked;
                 }

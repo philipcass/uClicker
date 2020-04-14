@@ -57,7 +57,7 @@ namespace uClicker
     public enum RequirementOperand
     {
         And,
-            Or
+        Or
     }
 
     [Serializable]
@@ -67,20 +67,20 @@ namespace uClicker
         Building,
         Upgrade
     }
-    
+
     [Serializable]
     public class Requirement
     {
         public RequirementType RequirementType;
         public CurrencyTuple UnlockAmount;
-        public Building UnlockBuilding;
+        public BuildingTuple UnlockBuilding;
         public Upgrade UnlockUpgrade;
     }
 
     [Serializable]
     public struct RequirementGroup
     {
-        public RequirementOperand RequirementOperand;
+        public RequirementOperand GroupOperand;
         public Requirement[] Requirements;
     }
 

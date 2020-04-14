@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace uClicker
 {
@@ -7,5 +8,12 @@ namespace uClicker
     {
         public CurrencyTuple Cost;
         public CurrencyTuple YieldAmount;
+    }
+
+    [Serializable]
+    public struct BuildingTuple
+    {
+        public Building Building;
+        public int Amount;
     }
 }
