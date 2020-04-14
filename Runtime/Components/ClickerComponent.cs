@@ -59,10 +59,19 @@ namespace uClicker
         And,
             Or
     }
+
+    [Serializable]
+    public enum RequirementType
+    {
+        Currency,
+        Building,
+        Upgrade
+    }
     
     [Serializable]
     public class Requirement
     {
+        public RequirementType RequirementType;
         public CurrencyTuple UnlockAmount;
         public Building UnlockBuilding;
         public Upgrade UnlockUpgrade;
