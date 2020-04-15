@@ -11,8 +11,17 @@ namespace uClicker
     }
 
     [Serializable]
+    public enum UpgradeType
+    {
+        Currency,
+        Building,
+        Clickable
+    }
+
+    [Serializable]
     public class UpgradePerk
     {
+        public UpgradeType Type;
         public Building TargetBuilding;
         public Clickable TargetClickable;
         public Currency TargetCurrency;
