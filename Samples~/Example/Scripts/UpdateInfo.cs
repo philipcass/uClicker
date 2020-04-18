@@ -36,7 +36,7 @@ public class UpdateInfo : MonoBehaviour
     private void OnBuyBuilding()
     {
         Buildings.text = "Current Buildings: " + string.Join(", ",
-                             Manager.State.EarnedBuildings.Select((kvp) =>
-                                 string.Format("{0} {1}", kvp.Key.name, kvp.Value)).ToArray());
+            Manager.State.EarnedBuildings.Select((kvp) =>
+                string.Format("{0} {1}", kvp.Key.name, kvp.Value)).ToArray());
     }
 }

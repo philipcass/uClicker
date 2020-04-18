@@ -28,9 +28,9 @@ public class PopulateUpgrades : MonoBehaviour
     {
         for (int i = 0; i < _clickerManager.Config.AvailableUpgrades.Length; i++)
         {
-            _objects[i].gameObject.SetActive(_clickerManager.Config.AvailableUpgrades[i].Unlocked &&
-                                             Array.IndexOf(_clickerManager.State.EarnedUpgrades,
-                                                 _clickerManager.Config.AvailableUpgrades[i]) == -1);
+            Upgrade availableUpgrade = _clickerManager.Config.AvailableUpgrades[i];
+            _objects[i].gameObject.SetActive(availableUpgrade.Unlocked &&
+                                             _clickerManager.State.EarnedUpgrades.Contains(availableUpgrade));
         }
     }
 }
