@@ -14,83 +14,7 @@ namespace uClicker
     [CreateAssetMenu(menuName = "uClicker/Manager")]
     public class ClickerManager : ClickerComponent
     {
-        [Serializable]
-        public class ManagerConfig
-        {
-            public Currency[] Currencies;
-            public Clickable[] Clickables;
-            public Building[] AvailableBuildings;
-            public Upgrade[] AvailableUpgrades;
-            public float BuildingCostIncrease = 0.15f;
-        }
-
-        [Serializable]
-        public class ManagerState : ISerializationCallbackReceiver
-        {
-            [NonSerialized] public Dictionary<Building, int> EarnedBuildings = new Dictionary<Building, int>();
-            [NonSerialized] public Upgrade[] EarnedUpgrades = new Upgrade[0];
-
-            [NonSerialized]
-            public Dictionary<Currency, float> CurrencyCurrentTotals = new Dictionary<Currency, float>();
-
-            [NonSerialized]
-            public Dictionary<Currency, float> CurrencyHistoricalTotals = new Dictionary<Currency, float>();
-
-            [SerializeField] private GUIDContainer[] _earnedBuildings;
-            [SerializeField] private int[] _earnedBuildingsCount = new int[0];
-            [SerializeField] private GUIDContainer[] _earnedUpgrades;
-            [SerializeField] private GUIDContainer[] _currencies;
-            [SerializeField] private float[] _currencyCurrentTotals = new float[0];
-            [SerializeField] private float[] _currencyHistoricalTotals = new float[0];
-
-            public void OnBeforeSerialize()
-            {
-                Array.Resize(ref _earnedBuildings, EarnedBuildings.Count);
-                Array.Resize(ref _earnedBuildingsCount, EarnedBuildings.Count);
-                int index = 0;
-                foreach (KeyValuePair<Building, int> kvp in EarnedBuildings)
-                {
-                    _earnedBuildings[index] = kvp.Key.GUIDContainer;
-                    _earnedBuildingsCount[index] = kvp.Value;
-                    index++;
-                }
-
-                Array.Resize(ref _currencies, CurrencyCurrentTotals.Count);
-                Array.Resize(ref _currencyCurrentTotals, CurrencyCurrentTotals.Count);
-                Array.Resize(ref _currencyHistoricalTotals, CurrencyCurrentTotals.Count);
-                index = 0;
-                foreach (KeyValuePair<Currency, float> kvp in CurrencyCurrentTotals)
-                {
-                    _currencies[index] = kvp.Key.GUIDContainer;
-                    _currencyCurrentTotals[index] = kvp.Value;
-                    float historicalTotal;
-                    CurrencyHistoricalTotals.TryGetValue(kvp.Key, out historicalTotal);
-                    _currencyHistoricalTotals[index] = historicalTotal;
-                    index++;
-                }
-
-                _earnedUpgrades = Array.ConvertAll(EarnedUpgrades, input => input.GUIDContainer);
-            }
-
-            public void OnAfterDeserialize()
-            {
-                for (int i = 0; i < _earnedBuildings.Length; i++)
-                {
-                    EarnedBuildings[(Building) RuntimeLookup[_earnedBuildings[i].Guid]] = _earnedBuildingsCount[i];
-                }
-
-                for (int i = 0; i < _currencies.Length; i++)
-                {
-                    CurrencyCurrentTotals[(Currency) RuntimeLookup[_currencies[i].Guid]] = _currencyCurrentTotals[i];
-                    CurrencyHistoricalTotals[(Currency) RuntimeLookup[_currencies[i].Guid]] =
-                        _currencyHistoricalTotals[i];
-                }
-
-                EarnedUpgrades = Array.ConvertAll(_earnedUpgrades, input => (Upgrade) RuntimeLookup[input.Guid]);
-            }
-        }
-
-        public SaveSettings SaveSettings = new SaveSettings();
+        public ManagerSaveSettings SaveSettings = new ManagerSaveSettings();
         public ManagerConfig Config;
         public ManagerState State;
 
@@ -98,14 +22,16 @@ namespace uClicker
         public UnityEvent OnBuyUpgrade;
         public UnityEvent OnBuyBuilding;
 
+        #region Unity Events
+
 #if UNITY_EDITOR
         private void OnValidate()
         {
             if (UnityEditor.EditorUserBuildSettings.activeBuildTarget == UnityEditor.BuildTarget.WebGL &&
-                SaveSettings.SaveType == SaveSettings.SaveTypeEnum.SaveToFile)
+                SaveSettings.SaveType == ManagerSaveSettings.SaveTypeEnum.SaveToFile)
             {
                 Debug.LogWarning("Cannot save to file on WebGL, changing to SaveToPlayerPrefs");
-                SaveSettings.SaveType = SaveSettings.SaveTypeEnum.SaveToPlayerPrefs;
+                SaveSettings.SaveType = ManagerSaveSettings.SaveTypeEnum.SaveToPlayerPrefs;
             }
         }
 #endif
@@ -115,7 +41,8 @@ namespace uClicker
             // Clear save on unload so we don't try deserializing the save between play/stop
             State = new ManagerState();
         }
-
+        #endregion
+        
         #region Public Game Logic
 
         public void Click(Clickable clickable)
@@ -160,27 +87,21 @@ namespace uClicker
                 return;
             }
 
-            if (!CanBuild(building))
+            if (!BuildingAvailable(building))
             {
                 return;
             }
 
-            bool containsKey = State.EarnedBuildings.ContainsKey(building);
-            float cost = !containsKey ? building.Cost.Amount : BuildingCost(building);
+            CurrencyTuple cost = BuildingCost(building);
 
-            if (!Deduct(building.Cost.Currency, cost))
+            if (!Deduct(cost.Currency, cost.Amount))
             {
                 return;
             }
 
-            if (containsKey)
-            {
-                State.EarnedBuildings[building]++;
-            }
-            else
-            {
-                State.EarnedBuildings[building] = 1;
-            }
+            int buildingCount;
+            State.EarnedBuildings.TryGetValue(building, out buildingCount);
+            State.EarnedBuildings[building] = buildingCount + 1;
 
             UpdateUnlocks();
             OnBuyBuilding.Invoke();
@@ -203,7 +124,7 @@ namespace uClicker
                 return;
             }
 
-            if (!CanUpgrade(upgrade))
+            if (!UpgradeAvailable(upgrade))
             {
                 return;
             }
@@ -213,13 +134,45 @@ namespace uClicker
                 return;
             }
 
-            Array.Resize(ref State.EarnedUpgrades, State.EarnedUpgrades.Length + 1);
-            State.EarnedUpgrades[State.EarnedUpgrades.Length - 1] = upgrade;
+            State.EarnedUpgrades.Add(upgrade);
             UpdateUnlocks();
             OnBuyUpgrade.Invoke();
         }
 
-        public int BuildingCost(Building building)
+        public bool CanBuy(ClickerComponent component)
+        {
+            CurrencyTuple cost;
+            if (component is Building)
+            {
+                Building building = component as Building;
+                if (!BuildingAvailable(building))
+                {
+                    return false;
+                }
+
+                cost = BuildingCost(building);
+            }
+            else if (component is Upgrade)
+            {
+                Upgrade upgrade = (component as Upgrade);
+                if (!UpgradeAvailable(upgrade))
+                {
+                    return false;
+                }
+
+                cost = upgrade.Cost;
+            }
+            else
+            {
+                return true;
+            }
+
+            float amount;
+            State.CurrencyCurrentTotals.TryGetValue(cost.Currency, out amount);
+            return amount >= cost.Amount;
+        }
+
+        public CurrencyTuple BuildingCost(Building building)
         {
             int count;
             if (!State.EarnedBuildings.TryGetValue(building, out count))
@@ -227,7 +180,9 @@ namespace uClicker
                 count = 0;
             }
 
-            return (int) (building.Cost.Amount * Mathf.Pow(1 + Config.BuildingCostIncrease, count));
+            CurrencyTuple currencyTuple = building.Cost;
+            currencyTuple.Amount = (int) currencyTuple.Amount * Mathf.Pow(1 + Config.BuildingCostIncrease, count);
+            return currencyTuple;
         }
 
         public void SaveProgress()
@@ -235,10 +190,10 @@ namespace uClicker
             string value = JsonUtility.ToJson(State, true);
             switch (SaveSettings.SaveType)
             {
-                case SaveSettings.SaveTypeEnum.SaveToPlayerPrefs:
+                case ManagerSaveSettings.SaveTypeEnum.SaveToPlayerPrefs:
                     PlayerPrefs.SetString(SaveSettings.SaveName, value);
                     break;
-                case SaveSettings.SaveTypeEnum.SaveToFile:
+                case ManagerSaveSettings.SaveTypeEnum.SaveToFile:
                     File.WriteAllText(SaveSettings.FullSavePath, value);
                     break;
                 default:
@@ -251,10 +206,10 @@ namespace uClicker
             string json;
             switch (SaveSettings.SaveType)
             {
-                case SaveSettings.SaveTypeEnum.SaveToPlayerPrefs:
+                case ManagerSaveSettings.SaveTypeEnum.SaveToPlayerPrefs:
                     json = PlayerPrefs.GetString(SaveSettings.SaveName);
                     break;
-                case SaveSettings.SaveTypeEnum.SaveToFile:
+                case ManagerSaveSettings.SaveTypeEnum.SaveToFile:
                     if (!File.Exists(SaveSettings.FullSavePath))
                     {
                         return;
@@ -342,24 +297,24 @@ namespace uClicker
         {
             foreach (Building availableBuilding in Config.AvailableBuildings)
             {
-                availableBuilding.Unlocked |= CanBuild(availableBuilding);
+                availableBuilding.Unlocked |= BuildingAvailable(availableBuilding);
             }
 
             foreach (Upgrade availableUpgrade in Config.AvailableUpgrades)
             {
-                availableUpgrade.Unlocked |= CanUpgrade(availableUpgrade);
+                availableUpgrade.Unlocked |= UpgradeAvailable(availableUpgrade);
             }
         }
 
-        private bool CanBuild(Building building)
+        private bool BuildingAvailable(Building building)
         {
             return IsUnlocked(building.RequirementGroups);
         }
 
-        private bool CanUpgrade(Upgrade upgrade)
+        private bool UpgradeAvailable(Upgrade upgrade)
         {
             bool unlocked = true;
-            unlocked &= Array.IndexOf(State.EarnedUpgrades, upgrade) == -1;
+            unlocked &= !State.EarnedUpgrades.Contains(upgrade);
             unlocked &= IsUnlocked(upgrade.RequirementGroups);
 
             return unlocked;
@@ -370,7 +325,7 @@ namespace uClicker
             bool compareStarted = false;
             // if empty it's unlocked
             bool groupsUnlocked = requirementGroups.Length == 0;
-            foreach (var requirementGroup in requirementGroups)
+            foreach (RequirementGroup requirementGroup in requirementGroups)
             {
                 if (!compareStarted)
                 {
@@ -398,7 +353,7 @@ namespace uClicker
                             break;
                         case RequirementType.Upgrade:
                             unlocked &= requirement.UnlockUpgrade == null ||
-                                        Array.IndexOf(State.EarnedUpgrades, requirement.UnlockUpgrade) != -1;
+                                        State.EarnedUpgrades.Contains(requirement.UnlockUpgrade);
                             break;
                         default:
                             throw new ArgumentOutOfRangeException();

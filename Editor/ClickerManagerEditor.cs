@@ -47,7 +47,7 @@ namespace Clicker.Editor
             if (GUILayout.Button("Reset Progress"))
             {
                 manager.State.EarnedBuildings.Clear();
-                manager.State.EarnedUpgrades = new Upgrade[0];
+                manager.State.EarnedUpgrades.Clear();
                 foreach (Building availableBuilding in manager.Config.AvailableBuildings)
                 {
                     availableBuilding.Unlocked = false;
