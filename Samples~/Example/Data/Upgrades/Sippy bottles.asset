@@ -15,7 +15,33 @@ MonoBehaviour:
   GUIDContainer:
     _serializedGuid: e67f9e40-57b3-4814-80b5-7bf7d76b40f4
   Unlocked: 1
-  RequirementGroups: []
+  RequirementGroups:
+  - GroupOperand: 0
+    Requirements:
+    - RequirementType: 1
+      UnlockAmount:
+        Currency: {fileID: 0}
+        Amount: 0
+      UnlockBuilding:
+        Building: {fileID: 11400000, guid: 334dafe90f2dd4b118bfccbe0dba4fda, type: 2}
+        Amount: 10
+      UnlockUpgrade: {fileID: 0}
+    - RequirementType: 1
+      UnlockAmount:
+        Currency: {fileID: 0}
+        Amount: 0
+      UnlockBuilding:
+        Building: {fileID: 11400000, guid: f7a6466584e4e0a489b8483e1357fd3e, type: 2}
+        Amount: 10
+      UnlockUpgrade: {fileID: 0}
+    - RequirementType: 1
+      UnlockAmount:
+        Currency: {fileID: 0}
+        Amount: 0
+      UnlockBuilding:
+        Building: {fileID: 11400000, guid: f24d7d7d04ffdb3409a09779aff7e9f0, type: 2}
+        Amount: 10
+      UnlockUpgrade: {fileID: 0}
   Cost:
     Currency: {fileID: 11400000, guid: a0eaf6f8e25cf47e78246e64e59f3eba, type: 2}
     Amount: 1000

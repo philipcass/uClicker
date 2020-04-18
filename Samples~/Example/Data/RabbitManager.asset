@@ -31,19 +31,25 @@ MonoBehaviour:
     - {fileID: 11400000, guid: c3fcf8cffacc44c5c864ef50586e2737, type: 2}
     - {fileID: 11400000, guid: 990a0369f171f63409e7f9584e998814, type: 2}
     - {fileID: 11400000, guid: d3789d1b5613f864f914f9a3b4672760, type: 2}
+    - {fileID: 11400000, guid: 8426f76df65329242a03f0b20e2b4172, type: 2}
     BuildingCostIncrease: 0.15
   State:
     _earnedBuildings:
     - _serializedGuid: d4dc22f4-c75d-4dbb-bfe1-b4dac26139c2
-    _earnedBuildingsCount: 02000000
+    - _serializedGuid: baaa0917-a398-4d76-b835-a6bce8c048b5
+    - _serializedGuid: 9e14c276-c13d-46d1-b2cb-473ec3d504bd
+    _earnedBuildingsCount: 0a0000000a0000000a000000
     _earnedUpgrades:
     - _serializedGuid: 0b05999c-6dab-4540-afef-f01d210fd8b4
+    - _serializedGuid: b9fe14ae-9f06-498e-a672-3f7f93abf79d
+    - _serializedGuid: bd2cb437-6ee2-4695-a7dc-539465645a2b
+    - _serializedGuid: e67f9e40-57b3-4814-80b5-7bf7d76b40f4
     _currencies:
     - _serializedGuid: 2792f0e8-9163-4c3a-9b0d-4e2b7c651639
     _currencyCurrentTotals:
-    - 108.39996
+    - 9988053
     _currencyHistoricalTotals:
-    - 240.39993
+    - 10004255
   OnTick:
     m_PersistentCalls:
       m_Calls:

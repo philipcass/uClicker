@@ -16,13 +16,16 @@ MonoBehaviour:
     _serializedGuid: 9e14c276-c13d-46d1-b2cb-473ec3d504bd
   Unlocked: 0
   RequirementGroups:
-  - RequirementOperand: 0
+  - GroupOperand: 0
     Requirements:
-    - UnlockAmount:
+    - RequirementType: 0
+      UnlockAmount:
         Currency: {fileID: 11400000, guid: a0eaf6f8e25cf47e78246e64e59f3eba, type: 2}
         Amount: 600
-      UnlockBuilding: {fileID: 0}
-      UnlockUpgrade: {fileID: 0}
+      UnlockBuilding:
+        Building: {fileID: 0}
+        Amount: 0
+      UnlockUpgrade: {fileID: 11400000, guid: 8426f76df65329242a03f0b20e2b4172, type: 2}
   Cost:
     Currency: {fileID: 11400000, guid: a0eaf6f8e25cf47e78246e64e59f3eba, type: 2}
     Amount: 600
