@@ -22,15 +22,17 @@ public class PopulateUpgrades : MonoBehaviour
             go.SetActive(availableUpgrade.Unlocked);
             _objects.Add(binder);
         }
+
+        _clickerManager.OnTick.AddListener(OnTick);
     }
 
-    private void Update()
+    private void OnTick()
     {
         for (int i = 0; i < _clickerManager.Config.AvailableUpgrades.Length; i++)
         {
             Upgrade availableUpgrade = _clickerManager.Config.AvailableUpgrades[i];
             _objects[i].gameObject.SetActive(availableUpgrade.Unlocked &&
-                                             _clickerManager.State.EarnedUpgrades.Contains(availableUpgrade));
+                                             !_clickerManager.State.EarnedUpgrades.Contains(availableUpgrade));
         }
     }
 }

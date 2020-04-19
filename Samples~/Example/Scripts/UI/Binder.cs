@@ -16,11 +16,11 @@ public class Binder : MonoBehaviour
     {
         if (_clickerComponent is Upgrade)
         {
-            _clickerManager.BuyUpgrade(Name.text);
+            _clickerManager.BuyUpgrade(_clickerComponent as Upgrade);
         }
         else
         {
-            _clickerManager.BuyBuilding(Name.text);
+            _clickerManager.BuyBuilding(_clickerComponent as Building);
         }
     }
 

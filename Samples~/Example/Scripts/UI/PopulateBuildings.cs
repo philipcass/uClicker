@@ -23,6 +23,7 @@ public class PopulateBuildings : MonoBehaviour
         }
 
         _clickerManager.OnBuyBuilding.AddListener(UpdateBuildingCost);
+        _clickerManager.OnTick.AddListener(OnTick);
     }
 
     private void UpdateBuildingCost()
@@ -33,7 +34,7 @@ public class PopulateBuildings : MonoBehaviour
         }
     }
 
-    private void Update()
+    private void OnTick()
     {
         for (int i = 0; i < _clickerManager.Config.AvailableBuildings.Length; i++)
         {
