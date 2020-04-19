@@ -41,8 +41,9 @@ namespace uClicker
             // Clear save on unload so we don't try deserializing the save between play/stop
             State = new ManagerState();
         }
+
         #endregion
-        
+
         #region Public Game Logic
 
         public void Click(Clickable clickable)
@@ -78,10 +79,8 @@ namespace uClicker
             }
         }
 
-        public void BuyBuilding(string id)
+        public void BuyBuilding(Building building)
         {
-            Building building = GetBuildingByName(id);
-
             if (building == null)
             {
                 return;
@@ -107,18 +106,8 @@ namespace uClicker
             OnBuyBuilding.Invoke();
         }
 
-        public void BuyUpgrade(string id)
+        public void BuyUpgrade(Upgrade upgrade)
         {
-            Upgrade upgrade = null;
-            foreach (Upgrade availableUpgrade in Config.AvailableUpgrades)
-            {
-                if (availableUpgrade.name == id)
-                {
-                    upgrade = availableUpgrade;
-                    break;
-                }
-            }
-
             if (upgrade == null)
             {
                 return;
@@ -276,21 +265,6 @@ namespace uClicker
             ApplyBuildingPerks(currency, ref amount);
             ApplyCurrencyPerk(currency, ref amount);
             return amount;
-        }
-
-        private Building GetBuildingByName(string id)
-        {
-            Building building = null;
-
-            foreach (Building availableBuilding in Config.AvailableBuildings)
-            {
-                if (availableBuilding.name == id)
-                {
-                    building = availableBuilding;
-                }
-            }
-
-            return building;
         }
 
         private void UpdateUnlocks()

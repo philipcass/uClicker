@@ -7,27 +7,17 @@ namespace uClicker
     [Serializable]
     public class ManagerState : ISerializationCallbackReceiver
     {
-        [NonSerialized]
-        public Dictionary<Building, int> EarnedBuildings = new Dictionary<Building, int>();
-        [NonSerialized] 
-        public List<Upgrade> EarnedUpgrades = new List<Upgrade>();
-        [NonSerialized]
-        public Dictionary<Currency, float> CurrencyCurrentTotals = new Dictionary<Currency, float>();
-        [NonSerialized]
-        public Dictionary<Currency, float> CurrencyHistoricalTotals = new Dictionary<Currency, float>();
+        [NonSerialized] public Dictionary<Building, int> EarnedBuildings = new Dictionary<Building, int>();
+        [NonSerialized] public List<Upgrade> EarnedUpgrades = new List<Upgrade>();
+        [NonSerialized] public Dictionary<Currency, float> CurrencyCurrentTotals = new Dictionary<Currency, float>();
+        [NonSerialized] public Dictionary<Currency, float> CurrencyHistoricalTotals = new Dictionary<Currency, float>();
 
-        [SerializeField] 
-        private List<GUIDContainer> _earnedBuildings;
-        [SerializeField] 
-        private List<int> _earnedBuildingsCount = new List<int>();
-        [SerializeField] 
-        private List<GUIDContainer> _earnedUpgrades;
-        [SerializeField] 
-        private List<GUIDContainer> _currencies;
-        [SerializeField] 
-        private List<float> _currencyCurrentTotals = new List<float>();
-        [SerializeField] 
-        private List<float> _currencyHistoricalTotals = new List<float>();
+        [SerializeField] private List<GUIDContainer> _earnedBuildings = new List<GUIDContainer>();
+        [SerializeField] private List<int> _earnedBuildingsCount = new List<int>();
+        [SerializeField] private List<GUIDContainer> _earnedUpgrades = new List<GUIDContainer>();
+        [SerializeField] private List<GUIDContainer> _currencies = new List<GUIDContainer>();
+        [SerializeField] private List<float> _currencyCurrentTotals = new List<float>();
+        [SerializeField] private List<float> _currencyHistoricalTotals = new List<float>();
 
         public void OnBeforeSerialize()
         {
@@ -58,12 +48,14 @@ namespace uClicker
         {
             for (int i = 0; i < _earnedBuildings.Count; i++)
             {
-                EarnedBuildings[(Building) ClickerComponent.RuntimeLookup[_earnedBuildings[i].Guid]] = _earnedBuildingsCount[i];
+                EarnedBuildings[(Building) ClickerComponent.RuntimeLookup[_earnedBuildings[i].Guid]] =
+                    _earnedBuildingsCount[i];
             }
 
             for (int i = 0; i < _currencies.Count; i++)
             {
-                CurrencyCurrentTotals[(Currency) ClickerComponent.RuntimeLookup[_currencies[i].Guid]] = _currencyCurrentTotals[i];
+                CurrencyCurrentTotals[(Currency) ClickerComponent.RuntimeLookup[_currencies[i].Guid]] =
+                    _currencyCurrentTotals[i];
                 CurrencyHistoricalTotals[(Currency) ClickerComponent.RuntimeLookup[_currencies[i].Guid]] =
                     _currencyHistoricalTotals[i];
             }
