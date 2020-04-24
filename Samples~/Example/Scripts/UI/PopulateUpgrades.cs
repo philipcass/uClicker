@@ -10,7 +10,6 @@ public class PopulateUpgrades : MonoBehaviour
 
     [NonSerialized] private List<Binder> _objects = new List<Binder>();
 
-    // Use this for initialization
     void Start()
     {
         for (int i = 0; i < _clickerManager.Config.AvailableUpgrades.Length; i++)
