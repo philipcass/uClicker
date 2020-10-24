@@ -25,6 +25,9 @@ namespace uClicker
         #region Unity Events
 
 #if UNITY_EDITOR
+        /// <summary>
+        /// Validates platform settings and switches to platform compatible settings automatically
+        /// </summary>
         private void OnValidate()
         {
             if (UnityEditor.EditorUserBuildSettings.activeBuildTarget == UnityEditor.BuildTarget.WebGL &&
@@ -36,6 +39,9 @@ namespace uClicker
         }
 #endif
 
+        /// <summary>
+        /// Inits Currency totals for manager on startup
+        /// </summary>
         public void OnEnable()
         {
             foreach (var configClickable in Config.Currencies)
@@ -44,9 +50,11 @@ namespace uClicker
             }
         }
 
+        /// <summary>
+        /// Clear save on unload so we don't try deserializing the save between play/stop
+        /// </summary>
         private void OnDisable()
         {
-            // Clear save on unload so we don't try deserializing the save between play/stop
             State = new ManagerState();
         }
 
@@ -182,6 +190,9 @@ namespace uClicker
             return currencyTuple;
         }
 
+        /// <summary>
+        /// Serializes state and saves to target <see cref="ManagerSaveSettings.SaveTypeEnum"/> in <see cref="SaveSettings"/>
+        /// </summary>
         public void SaveProgress()
         {
             string value = JsonUtility.ToJson(State, true);
@@ -198,6 +209,10 @@ namespace uClicker
             }
         }
 
+        /// <summary>
+        /// Loads from target <see cref="ManagerSaveSettings.SaveTypeEnum"/> in <see cref="SaveSettings"/>
+        /// </summary>
+        /// <exception cref="ArgumentException">When save does not exist</exception>
         public void LoadProgress()
         {
             string json;
@@ -234,6 +249,9 @@ namespace uClicker
             OnBuyUpgrade.Invoke();
         }
 
+        /// <summary>
+        /// Clear progress from target <see cref="ManagerSaveSettings.SaveTypeEnum"/> in <see cref="SaveSettings"/>
+        /// </summary>
         public void ClearProgress()
         {
             switch (SaveSettings.SaveType)
