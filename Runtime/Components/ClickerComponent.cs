@@ -87,6 +87,6 @@ namespace uClicker
     public abstract class UnlockableComponent : ClickerComponent
     {
         public bool Unlocked;
-        public RequirementGroup[] RequirementGroups;
+        public RequirementGroup[] RequirementGroups = new RequirementGroup[0];
     }
 }
