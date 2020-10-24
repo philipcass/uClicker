@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using NUnit.Framework;
 using uClicker;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.TestTools;
 
 namespace Tests
 {
@@ -21,22 +18,31 @@ namespace Tests
             _testManager = ScriptableObject.CreateInstance<ClickerManager>();
             _testCurrency = ScriptableObject.CreateInstance<Currency>();
             _testClickable = ScriptableObject.CreateInstance<Clickable>();
+            _testManager.SaveSettings.SaveName = "TEST_SAVE";
+            _testManager.SaveSettings.SavePath = Application.dataPath;
         }
-        
-        [Test]
-        public void TestClicking()
+
+        [TearDown]
+        public void TearDown()
+        {
+            _testManager.ClearProgress();
+        }
+
+        [TestCase(3, ExpectedResult = 3)]
+        public int TestClicking(int clickCount)
         {
             _testClickable.Currency = _testCurrency;
             _testClickable.Amount = 1;
             ArrayUtility.Add(ref _testManager.Config.Currencies, _testCurrency);
             _testManager.OnEnable();
-            
-            Assert.AreEqual(0, _testManager.State.CurrencyCurrentTotals[_testCurrency]);
-            _testManager.Click(_testClickable);
-            _testManager.Click(_testClickable);
-            _testManager.Click(_testClickable);
-            Assert.AreEqual(3, _testManager.State.CurrencyCurrentTotals[_testCurrency]);
 
+            Assert.AreEqual(0, _testManager.State.CurrencyCurrentTotals[_testCurrency]);
+            for (int i = 0; i < clickCount; i++)
+            {
+                _testManager.Click(_testClickable);
+            }
+
+            return (int) _testManager.State.CurrencyCurrentTotals[_testCurrency];
         }
 
         [Test]
@@ -56,7 +62,20 @@ namespace Tests
             _testManager.OnEnable();
             _testManager.Tick();
             Assert.AreEqual(5, _testManager.State.CurrencyCurrentTotals[_testCurrency]);
- 
+        }
+
+        [TestCase(ManagerSaveSettings.SaveTypeEnum.SaveToPlayerPrefs)]
+        [TestCase(ManagerSaveSettings.SaveTypeEnum.SaveToFile)]
+        public void TestSave(ManagerSaveSettings.SaveTypeEnum saveType)
+        {
+            _testClickable.Currency = _testCurrency;
+            _testClickable.Amount = 1;
+            ArrayUtility.Add(ref _testManager.Config.Currencies, _testCurrency);
+
+            _testManager.SaveSettings.SaveType = saveType;
+            Assert.Throws<ArgumentException>(() => { _testManager.LoadProgress(); });
+            _testManager.SaveProgress();
+            _testManager.LoadProgress();
         }
     }
 }

@@ -204,12 +204,17 @@ namespace uClicker
             switch (SaveSettings.SaveType)
             {
                 case ManagerSaveSettings.SaveTypeEnum.SaveToPlayerPrefs:
+                    if (!PlayerPrefs.HasKey(SaveSettings.SaveName))
+                    {
+                        throw new ArgumentException($"Save '{SaveSettings.SaveName}' is null");
+                    }
+
                     json = PlayerPrefs.GetString(SaveSettings.SaveName);
                     break;
                 case ManagerSaveSettings.SaveTypeEnum.SaveToFile:
                     if (!File.Exists(SaveSettings.FullSavePath))
                     {
-                        return;
+                        throw new ArgumentException($"Save '{SaveSettings.FullSavePath}' is null");
                     }
 
 #if DEBUG
@@ -227,6 +232,21 @@ namespace uClicker
             OnTick.Invoke();
             OnBuyBuilding.Invoke();
             OnBuyUpgrade.Invoke();
+        }
+
+        public void ClearProgress()
+        {
+            switch (SaveSettings.SaveType)
+            {
+                case ManagerSaveSettings.SaveTypeEnum.SaveToPlayerPrefs:
+                    PlayerPrefs.DeleteKey(SaveSettings.SaveName);
+                    break;
+                case ManagerSaveSettings.SaveTypeEnum.SaveToFile:
+                    File.Delete(SaveSettings.FullSavePath);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
         }
 
         #endregion
