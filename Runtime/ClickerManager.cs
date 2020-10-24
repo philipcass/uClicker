@@ -15,12 +15,12 @@ namespace uClicker
     public class ClickerManager : ClickerComponent
     {
         public ManagerSaveSettings SaveSettings = new ManagerSaveSettings();
-        public ManagerConfig Config;
-        public ManagerState State;
+        public ManagerConfig Config = new ManagerConfig();
+        public ManagerState State = new ManagerState();
 
-        public UnityEvent OnTick;
-        public UnityEvent OnBuyUpgrade;
-        public UnityEvent OnBuyBuilding;
+        public UnityEvent OnTick = new UnityEvent();
+        public UnityEvent OnBuyUpgrade = new UnityEvent();
+        public UnityEvent OnBuyBuilding = new UnityEvent();
 
         #region Unity Events
 
@@ -35,6 +35,14 @@ namespace uClicker
             }
         }
 #endif
+
+        public void OnEnable()
+        {
+            foreach (var configClickable in Config.Currencies)
+            {
+                UpdateTotal(configClickable, 0);
+            }
+        }
 
         private void OnDisable()
         {
